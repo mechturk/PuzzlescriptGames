@@ -1,11 +1,11 @@
 PuzzlescriptGames
 =================
 
+A number of games written in puzzlescript.
+
 A Cog's Life
 ------------
 A game about a small cog in a big world.
-=======
-A number of games written in puzzlescript.
 
 Colour Chained
 --------------

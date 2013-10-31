@@ -1,0 +1,291 @@
+title ScriptCross
+author Dennis Au
+homepage www.puzzlescript.net
+again_interval 0
+run_rules_on_level_start
+
+========
+OBJECTS
+========
+
+Background 
+White
+
+Target
+White
+
+Fill
+Black
+
+Cross
+LightGrey
+0...0
+.0.0.
+..0..
+.0.0.
+0...0
+
+
+Player
+Green
+00000
+0...0
+0...0
+0...0
+00000
+
+Border #
+LightGrey
+
+Clue0 0
+LightGrey
+(or: (useful for testing)
+
+LightGrey Black White
+00000
+02220
+02220
+02220
+00000
+)
+
+Clue1 1
+LightGrey Black White
+00000
+02220
+02120
+02220
+00000
+
+Clue2 2
+LightGrey Black White
+00000
+02210
+02220
+01220
+00000
+
+Clue3 3
+LightGrey Black White
+00000
+02210
+02120
+01220
+00000
+
+Clue4 4
+LightGrey Black White
+00000
+01210
+02220
+01210
+00000
+
+Clue5 5
+LightGrey Black White
+00000
+01210
+02120
+01210
+00000
+
+Clue6 6
+LightGrey Black White
+00000
+01210
+01210
+01210
+00000
+
+Clue7 7
+LightGrey Black White
+00000
+01110
+02120
+01110
+00000
+
+Clue8 8
+LightGrey Black White
+00000
+01110
+02110
+01110
+00000
+
+Clue9 9
+LightGrey Black White
+00000
+01110
+01110
+01110
+00000
+
+HClueGen
+Green
+.....
+.....
+.....
+.....
+.....
+
+VClueGen
+Red
+.....
+.....
+.....
+.....
+.....
+
+NewClue
+Blue
+
+ClueInc
+Yellow
+.....
+.....
+.....
+.....
+.....
+
+=======
+LEGEND
+=======
+
+. = Background
+| = HClueGen and Clue0
+- = VClueGen and Clue0
++ = Player and Border
+b = Target
+Clue = Clue0 or Clue1 or Clue2 or Clue3 or Clue4 or Clue5 or Clue6 or Clue7 or Clue8 or Clue9
+Occupied = Fill or Cross or Clue or Border
+ClueGen = HClueGen or VClueGen
+
+=======
+SOUNDS
+=======
+EndLevel 37348103
+EndGame 64173909
+
+================
+COLLISIONLAYERS
+================
+
+Background
+Target, Border
+Clue, Cross, Fill
+ClueInc, VClueGen
+NewClue, HClueGen
+Player
+
+======
+RULES     
+======
+
+[Action Player no Occupied] -> [Player Fill]
+[Action Player Fill] -> [Player Cross]  
+[Action Player Cross] -> [Player]
+
+(.....................)
+(...Clue Generation...)
+(.....................)
+Up [VClueGen] -> [Up VClueGen] again
+Left [HClueGen] -> [Left HClueGen] again
+
+(create a new clue when the cluegen sees [no target|target])
+[< ClueGen Target | No Target | ... | No Clue No NewClue | Clue No Clue0] -> [< ClueGen Target | No Target | ... | No Clue | NewClue > Clue]
+
+(make sure new clues can push the old ones out of the way)
+[> Clue| Clue] -> [> Clue| > Clue]
+
+(increment clue as the cluegen traverses a target)
+(general case)
+[< ClueGen Target| ... | No Clue No NewClue| Clue No ClueInc] -> [< ClueGen Target| ... || Clue ClueInc]
+(for the edge case where the clue is next to the target)
+[< ClueGen Target | Clue] -> [< ClueGen Target | Clue ClueInc]
+
+Late [NewClue] -> [Clue0]
+Late [Clue8 ClueInc] -> [Clue9]
+Late [Clue7 ClueInc] -> [Clue8]
+Late [Clue6 ClueInc] -> [Clue7]
+Late [Clue5 ClueInc] -> [Clue6]
+Late [Clue4 ClueInc] -> [Clue5]
+Late [Clue3 ClueInc] -> [Clue4]
+Late [Clue2 ClueInc] -> [Clue3]
+Late [Clue1 ClueInc] -> [Clue2]
+Late [Clue0 ClueInc] -> [Clue1]
+late [ClueInc] -> []
+
+
+
+==============
+WINCONDITIONS
+==============
+
+All Target on Fill
+All Fill on Target
+
+=======     
+LEVELS
+=======
+
+message level 1 - a counting
+
+###########
+#........b|
+#.......bb|
+#......bbb|
+#.....bbbb|
+#....bbbbb|
+#...bbbbbb|
+#..bbbbbbb|
+#.bbbbbbbb|
+#bbbbbbbbb|
+----------+
+
+message level 2 - hopscotch?
+
+########
+#.....|#
+#.bbb.|#
+#.b.b.|#
+#.bbb.|#
+#..b..|#
+#bbbbb|#
+#.bbb.|#
+#.b.bb|#
+#.b...|#
+#-----+#
+########
+
+message level 3 - freedom
+########
+#.....|#
+#.bbb.|#
+#.b.b.|#
+#.bbb.|#
+#..b..|#
+#..b..|#
+#..bb.|#
+#..b..|#
+#..bb.|#
+#-----+#
+########
+########
+
+message level 4 - yes chef!
+############
+#.b..b...|##
+#.b..b...|##
+#.bbbb...|##
+#.b..b.bb|##
+#..bb..bb|##
+#.b..b.bb|##
+#.b..bbb.|##
+#bb..b.b.|##
+#.bbbb...|##
+#--------+##
+############
+############
+
+message congratulations!

@@ -1,0 +1,233 @@
+title A Cog's Life
+author Dennis Au
+run_rules_on_level_start
+again_interval 0.5
+debug
+
+========
+OBJECTS
+========
+
+Background
+White Black
+.....
+.....
+.....
+.....
+.....
+
+Rot0
+DarkGreen
+.....
+..0..
+.....
+.....
+.....
+
+Rot1
+DarkGreen
+.....
+.....
+...0.
+.....
+.....
+
+Rot2
+DarkGreen
+.....
+.....
+.....
+..0..
+.....
+
+Rot3
+DarkGreen
+.....
+.....
+.0...
+.....
+.....
+
+Player
+White
+.....
+.000.
+.0.0.
+.000.
+.....
+
+Cog o
+LightGrey Grey DarkGrey
+..1..
+.000.
+20.01
+.000.
+..2..
+
+
+CWiser
+Blue
+.....
+.000.
+.0.0.
+.000.
+.....
+
+ACWiser
+Green
+.....
+.000.
+.0.0.
+.000.
+.....
+
+RackV /
+DarkGrey
+.0...
+.0...
+00...
+.0...
+.0...
+
+RackH -
+Grey
+..0..
+00000
+.....
+.....
+.....
+
+goal g
+green
+=======
+LEGEND
+=======
+. = Background
+P = Player and Cog
+C = CWiser and Cog
+A = ACWiser and Cog
+
+Rack = RackV or RackH
+Rotatable = Cog
+Obstacle = Cog
+RotationState = Rot0 or Rot1 or Rot2 or Rot3
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+Background
+Rotatable, Rack
+Player, CWiser, ACWiser, Goal
+RotationState
+
+======
+RULES
+======
+
+(==============
+ rotation phase
+ ==============)
+
+[Rotatable No RotationState] -> [Rotatable Random RotationState]
+
+[CWiser Rotatable] -> [CWiser Right Rotatable] again
+[ACWiser Rotatable] -> [ACWiser Left Rotatable] again
+
+[Right Player Rotatable] -> [Right Player Right Rotatable]
+[Left Player Rotatable] -> [Left Player Left Rotatable]
+
+startloop
+(cog/cog)
+[Left Rotatable| Rotatable] -> [Left Rotatable| Right Rotatable]
++[Right Rotatable | Rotatable] -> [Right Rotatable| Left Rotatable]
+
+Horizontal [> Rotatable RotationState ] -> [Rotatable > RotationState]
+
+(cog/rack)
+Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
+Right [Left RotationState|RackV] -> [Left RotationState| Up RackV]
+
+Down [Right RotationState| RackH] -> [Right RotationState| Left RackH]
+Down [Left RotationState| RackH] -> [Left RotationState| Right RackH]
+
+(contigious rack)
+Vertical [Parallel RackV| Stationary RackV] -> [Parallel RackV| Parallel RackV]
+Horizontal [Parallel RackH| Stationary RackH] -> [Parallel RackH| Parallel RackH]
+
+(rack/cog)
+Right [Stationary RotationState|Down RackV] -> [Right RotationState| Down RackV]
+Right [Stationary RotationState|Up RackV] -> [Left RotationState| Up RackV]
+
+Down [Stationary RotationState| Left RackH] -> [Right RotationState| Left RackH]
+Down [Stationary RotationState| Right RackH] -> [Left RotationState| Right RackH]
+endloop
+
+[right Rot0] -> [Rot1]
+[right Rot1] -> [Rot2]
+[right Rot2] -> [Rot3]
+[right Rot3] -> [Rot0]
+
+[left rot0] -> [rot3]
+[left rot3] -> [rot2]
+[left rot2] -> [rot1]
+[left rot1] -> [rot0]
+
+Horizontal [> Player] -> [Player]
+
+
+
+
+
+(=================
+ translation phase
+ =================)
+Up [Up Player Cog Rot0| No Obstacle] -> [|Player Cog Rot0]
+Right [Up Player Cog Rot1| No Obstacle] -> [|Player Cog Rot1]
+Down [Up Player Cog Rot2| No Obstacle] -> [|Player Cog Rot2]
+Left [Up Player Cog Rot3| No Obstacle] -> [|Player Cog Rot3]
+
+Down [Down Player Cog Rot0| No Obstacle] -> [|Player Cog Rot0]
+Left [Down Player Cog Rot1| No Obstacle] -> [|Player Cog Rot1]
+Up [Down Player Cog Rot2| No Obstacle] -> [|Player Cog Rot2]
+Right [Down Player Cog Rot3| No Obstacle] -> [|Player Cog Rot3]
+
+[Up Player] -> [Player]
+[Down Player] -> [Player]
+
+==============
+WINCONDITIONS
+==============
+
+
+=======
+LEVELS
+=======
+........coo.......
+........o.o.......
+........ooo.......
+........o.o.......
+........o.o.......
+..........--------
+
+.coo.aoo.coo.a.coo
+.o...o.o.o...o.o..
+.o...o.o.o.....ooo
+.o...o.o.o.o.....o
+.ooo.ooo.ooo...ooo
+
+...c...a.coo.aoo..
+...o...o.o...o....
+...o...o.ooo.ooo..
+...o...o.o...o....
+...ooo.o.o...ooo..
+
+........
+.....o/.
+.../../.
+..p/.o/.
+..----/.
+....../.

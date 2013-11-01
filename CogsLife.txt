@@ -8,13 +8,9 @@ debug
 OBJECTS
 ========
 
-Background
-White Black
-.....
-.....
-.....
-.....
-.....
+Floor
+DarkBlue
+
 
 Rot0
 DarkGreen
@@ -97,19 +93,38 @@ Grey
 .....
 .....
 
+MovementError
+LightRed
+0...0
+.....
+.....
+.....
+0...0
+
 goal g
 green
+
+Wall #
+Grey DarkGrey
+00100
+11111
+00001
+11111
+00100
+
 =======
 LEGEND
 =======
-. = Background
+. = Floor
+
 P = Player and Cog
 C = CWiser and Cog
 A = ACWiser and Cog
 
+Background = Floor or Goal
 Rack = RackV or RackH
 Rotatable = Cog
-Obstacle = Cog
+Obstacle = Wall
 RotationState = Rot0 or Rot1 or Rot2 or Rot3
 
 =======
@@ -120,8 +135,9 @@ SOUNDS
 COLLISIONLAYERS
 ================
 Background
-Rotatable, Rack
-Player, CWiser, ACWiser, Goal
+Rotatable, Rack, Wall
+Player, CWiser, ACWiser
+MovementError
 RotationState
 
 ======
@@ -132,6 +148,7 @@ RULES
  rotation phase
  ==============)
 
+[MovementError] -> []
 [Rotatable No RotationState] -> [Rotatable Random RotationState]
 
 [CWiser Rotatable] -> [CWiser Right Rotatable] again
@@ -142,29 +159,41 @@ RULES
 
 startloop
 (cog/cog)
-[Left Rotatable| Rotatable] -> [Left Rotatable| Right Rotatable]
-+[Right Rotatable | Rotatable] -> [Right Rotatable| Left Rotatable]
+[Left Rotatable| No MovementError Rotatable] -> [Left Rotatable| Right Rotatable]
++[Right Rotatable | No MovementError Rotatable] -> [Right Rotatable| Left Rotatable]
+
+Horizontal [> Rotatable|> Rotatable] -> [MovementError Rotatable|MovementError Rotatable]
 
 Horizontal [> Rotatable RotationState ] -> [Rotatable > RotationState]
 
 (cog/rack)
 Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
 Right [Left RotationState|RackV] -> [Left RotationState| Up RackV]
+Right [MovementError RotationState|RackV] -> [MovementError RotationState|MovementError stationary RackV]
 
 Down [Right RotationState| RackH] -> [Right RotationState| Left RackH]
 Down [Left RotationState| RackH] -> [Left RotationState| Right RackH]
+Down [MovementError RotationState|RackH] -> [MovementError RotationState|MovementError stationary RackH]
 
 (contigious rack)
 Vertical [Parallel RackV| Stationary RackV] -> [Parallel RackV| Parallel RackV]
+Vertical [> RackV| < RackV] -> [MovementError RackV|MovementError RackV]
+Vertical [< RackV| > RackV] -> [MovementError RackV|MovementError RackV]
 Horizontal [Parallel RackH| Stationary RackH] -> [Parallel RackH| Parallel RackH]
+Vertical [> RackH| < RackH] -> [MovementError RackH|MovementError RackH]
+Vertical [< RackH| > RackH] -> [MovementError RackH|MovementError RackH]
 
 (rack/cog)
 Right [Stationary RotationState|Down RackV] -> [Right RotationState| Down RackV]
 Right [Stationary RotationState|Up RackV] -> [Left RotationState| Up RackV]
+Right [RotationState|movementError RackV] -> [MovementError stationary RotationState|MovementError RackV]
 
 Down [Stationary RotationState| Left RackH] -> [Right RotationState| Left RackH]
 Down [Stationary RotationState| Right RackH] -> [Left RotationState| Right RackH]
+Down [RotationState| MovementError RackH] -> [MovementError stationary RotationState|MovementError RackH]
 endloop
+
+
 
 [right Rot0] -> [Rot1]
 [right Rot1] -> [Rot2]
@@ -179,33 +208,40 @@ endloop
 Horizontal [> Player] -> [Player]
 
 
-
-
-
 (=================
  translation phase
  =================)
-Up [Up Player Cog Rot0| No Obstacle] -> [|Player Cog Rot0]
-Right [Up Player Cog Rot1| No Obstacle] -> [|Player Cog Rot1]
-Down [Up Player Cog Rot2| No Obstacle] -> [|Player Cog Rot2]
-Left [Up Player Cog Rot3| No Obstacle] -> [|Player Cog Rot3]
 
-Down [Down Player Cog Rot0| No Obstacle] -> [|Player Cog Rot0]
-Left [Down Player Cog Rot1| No Obstacle] -> [|Player Cog Rot1]
-Up [Down Player Cog Rot2| No Obstacle] -> [|Player Cog Rot2]
-Right [Down Player Cog Rot3| No Obstacle] -> [|Player Cog Rot3]
+(use cog for collision detection)
+[Up Player Cog Rot0] -> [Player Up Cog Rot0]
+[Up Player Cog Rot1] -> [Player Right Cog Rot1]
+[Up Player Cog Rot2] -> [Player Down Cog Rot2]
+[Up Player Cog Rot3] -> [Player Left Cog Rot3]
 
-[Up Player] -> [Player]
-[Down Player] -> [Player]
+[Down Player Cog Rot0] -> [Player Down Cog Rot0]
+[Down Player Cog Rot1] -> [Player Left Cog Rot1]
+[Down Player Cog Rot2] -> [Player Up Cog Rot2]
+[Down Player Cog Rot3] -> [Player Right Cog Rot3]
+
+Vertical [Player > Cog| RackV] -> [Player > Cog| > RackV]
+Vertical [> RackV| RackV] -> [> RackV| > RackV]
+Horizontal [Player > Cog| RackH] -> [Player > Cog| > RackH]
+Horizontal [> RackH| RackH] -> [> RackH| > RackH]
+
+[Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
+
+rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
 
 ==============
 WINCONDITIONS
 ==============
-
+all goal on player
 
 =======
 LEVELS
 =======
+
+(
 ........coo.......
 ........o.o.......
 ........ooo.......
@@ -224,10 +260,23 @@ LEVELS
 ...o...o.ooo.ooo..
 ...o...o.o...o....
 ...ooo.o.o...ooo..
+)
 
-........
+..###.
+###.##
+#p./.#
+#../.#
+###/.#
+.../.#
+g.o..#
+##o#.#
+.#...#
+.#####
+
+.......g
 .....o/.
 .../../.
 ..p/.o/.
 ..----/.
 ....../.
+

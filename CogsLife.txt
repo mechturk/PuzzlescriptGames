@@ -126,7 +126,7 @@ Rack = RackV or RackH
 Rotatable = Cog
 Obstacle = Wall
 RotationState = Rot0 or Rot1 or Rot2 or Rot3
-
+Moveable = Cog or Rack
 =======
 SOUNDS
 =======
@@ -159,16 +159,21 @@ RULES
 
 startloop
 (cog/cog)
+
+[left RotationState|left RotationState] -> [MovementError RotationState|MovementError RotationSTate]
+[right RotationState|right RotationState] -> [MovementError RotationState|MovementError RotationState]
+
+
 [Left Rotatable| No MovementError Rotatable] -> [Left Rotatable| Right Rotatable]
 +[Right Rotatable | No MovementError Rotatable] -> [Right Rotatable| Left Rotatable]
 
-Horizontal [> Rotatable|> Rotatable] -> [MovementError Rotatable|MovementError Rotatable]
+[MovementError Rotatable| No MovementError Rotatable] -> [MovementError Rotatable| MovementError Rotatable]
 
 Horizontal [> Rotatable RotationState ] -> [Rotatable > RotationState]
 
 (cog/rack)
-Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
-Right [Left RotationState|RackV] -> [Left RotationState| Up RackV]
+rigid Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
+rigid Right [Left RotationState|RackV] -> [Left RotationState| Up RackV]
 Right [MovementError RotationState|RackV] -> [MovementError RotationState|MovementError stationary RackV]
 
 Down [Right RotationState| RackH] -> [Right RotationState| Left RackH]
@@ -179,18 +184,26 @@ Down [MovementError RotationState|RackH] -> [MovementError RotationState|Movemen
 Vertical [Parallel RackV| Stationary RackV] -> [Parallel RackV| Parallel RackV]
 Vertical [> RackV| < RackV] -> [MovementError RackV|MovementError RackV]
 Vertical [< RackV| > RackV] -> [MovementError RackV|MovementError RackV]
+Vertical [MovementError RackV| RackV] -> [MovementError RackV| MovementError RackV] 
+
 Horizontal [Parallel RackH| Stationary RackH] -> [Parallel RackH| Parallel RackH]
-Vertical [> RackH| < RackH] -> [MovementError RackH|MovementError RackH]
-Vertical [< RackH| > RackH] -> [MovementError RackH|MovementError RackH]
+Horizontal [> RackH| < RackH] -> [MovementError RackH|MovementError RackH]
+Horizontal [< RackH| > RackH] -> [MovementError RackH|MovementError RackH]
+Horizontal [MovementError RackH| RackH] -> [MovementError RackH| MovementError RackH]
 
 (rack/cog)
-Right [Stationary RotationState|Down RackV] -> [Right RotationState| Down RackV]
-Right [Stationary RotationState|Up RackV] -> [Left RotationState| Up RackV]
+Right [RotationState|Down RackV] -> [Right RotationState| Down RackV]
+Right [RotationState|Up RackV] -> [Left RotationState| Up RackV]
+
 Right [RotationState|movementError RackV] -> [MovementError stationary RotationState|MovementError RackV]
 
-Down [Stationary RotationState| Left RackH] -> [Right RotationState| Left RackH]
-Down [Stationary RotationState| Right RackH] -> [Left RotationState| Right RackH]
+Down [RotationState| Left RackH] -> [Right RotationState| Left RackH]
+Down [RotationState| Right RackH] -> [Left RotationState| Right RackH]
+
 Down [RotationState| MovementError RackH] -> [MovementError stationary RotationState|MovementError RackH]
+
+[MovementError Moveable] -> [MovementError Stationary Moveable] again
+[MovementError RotationState] -> [MovementError Stationary RotationSTate]
 endloop
 
 
@@ -228,7 +241,7 @@ Vertical [> RackV| RackV] -> [> RackV| > RackV]
 Horizontal [Player > Cog| RackH] -> [Player > Cog| > RackH]
 Horizontal [> RackH| RackH] -> [> RackH| > RackH]
 
-[Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
+rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
 
 rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
 
@@ -279,4 +292,8 @@ g.o..#
 ..p/.o/.
 ..----/.
 ....../.
+
+...........g
+p.....ooo...
+---------...
 

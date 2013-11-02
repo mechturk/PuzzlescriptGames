@@ -150,7 +150,7 @@ RULES
 [Rotatable No RotationState] -> [Rotatable Random RotationState]
 
 (=================
- translation phase
+ Translation Phase
  =================)
 
 (use cog for collision detection)
@@ -170,7 +170,7 @@ Horizontal [Player > Cog| RackH] -> [Player > Cog| > RackH]
 Horizontal [> RackH| RackH] -> [> RackH| > RackH]
 
 (==============
- rotation phase
+ Rotation Phase
  ==============)
  
 (use rotationstate to transfer rotation)
@@ -179,53 +179,75 @@ Horizontal [> RackH| RackH] -> [> RackH| > RackH]
 [Left Player RotationState] -> [Left Player Left RotationState]
 
 startloop
-(cog/cog)
 
-[left RotationState|left RotationState] -> [MovementError RotationState|MovementError RotationState]
-[right RotationState|right RotationState] -> [MovementError RotationState|MovementError RotationState]
+(===============
+ Motion Transfer
+ ===============)
 
+(cog -> cog)
+[Left Rotationstate| Rotationstate] -> [Left Rotationstate| Right Rotationstate]
++[Right RotationState | RotationState] -> [Right RotationState| Left RotationState]
 
-[Left Rotationstate| No MovementError Rotationstate] -> [Left Rotationstate| Right Rotationstate]
-+[Right RotationState | No MovementError RotationState] -> [Right RotationState| Left RotationState]
-
-[MovementError RotationState| No MovementError RotationState] -> [MovementError RotationState| MovementError RotationState]
-
-(cog/rack)
+(cog -> rack)
 Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
 Right [Left RotationState|RackV] -> [Left RotationState| Up RackV]
-Right [MovementError RotationState|RackV] -> [MovementError RotationState|MovementError stationary RackV]
 
 Down [Right RotationState| RackH] -> [Right RotationState| Left RackH]
 Down [Left RotationState| RackH] -> [Left RotationState| Right RackH]
-Down [MovementError RotationState|RackH] -> [MovementError RotationState|MovementError stationary RackH]
 
-(contigious rack)
+(rack -> rack)
 Vertical [Parallel RackV| Stationary RackV] -> [Parallel RackV| Parallel RackV]
-Vertical [> RackV| < RackV] -> [MovementError RackV|MovementError RackV]
-Vertical [< RackV| > RackV] -> [MovementError RackV|MovementError RackV]
-Vertical [MovementError RackV| RackV] -> [MovementError RackV| MovementError RackV] 
-
 Horizontal [Parallel RackH| Stationary RackH] -> [Parallel RackH| Parallel RackH]
-Horizontal [> RackH| < RackH] -> [MovementError RackH|MovementError RackH]
-Horizontal [< RackH| > RackH] -> [MovementError RackH|MovementError RackH]
-Horizontal [MovementError RackH| RackH] -> [MovementError RackH| MovementError RackH]
 
-(rack/cog)
+(rack -> cog)
 Right [RotationState|Down RackV] -> [Right RotationState| Down RackV]
 Right [RotationState|Up RackV] -> [Left RotationState| Up RackV]
-
-Right [RotationState|movementError RackV] -> [MovementError stationary RotationState|MovementError RackV]
 
 Down [RotationState| Left RackH] -> [Right RotationState| Left RackH]
 Down [RotationState| Right RackH] -> [Left RotationState| Right RackH]
 
-Down [RotationState| MovementError RackH] -> [MovementError stationary RotationState|MovementError RackH]
+(=========================
+ Movement Error Generation
+ =========================)
 
+(opposing cogs)
+[left RotationState|left RotationState] -> [MovementError RotationState|MovementError RotationState]
+[right RotationState|right RotationState] -> [MovementError RotationState|MovementError RotationState]
+
+(split/crushed racks)
+Vertical [> RackV| < RackV] -> [MovementError RackV|MovementError RackV]
+Vertical [< RackV| > RackV] -> [MovementError RackV|MovementError RackV]
+
+Horizontal [> RackH| < RackH] -> [MovementError RackH|MovementError RackH]
+Horizontal [< RackH| > RackH] -> [MovementError RackH|MovementError RackH]
+
+(==========================
+ Movement Error Propogation
+ ==========================)
+
+(cog -> cog)
+[MovementError RotationState| RotationState] -> [MovementError RotationState| MovementError RotationState]
+
+(cog -> rack)
+Right [MovementError RotationState|RackV] -> [MovementError RotationState|MovementError RackV]
+Down [MovementError RotationState|RackH] -> [MovementError RotationState|MovementError RackH]
+
+(rack -> rack)
+Vertical [MovementError RackV| RackV] -> [MovementError RackV| MovementError RackV] 
+Horizontal [MovementError RackH| RackH] -> [MovementError RackH| MovementError RackH]
+
+(rack -> cog)
+Right [RotationState|movementError RackV] -> [MovementError RotationState|MovementError RackV]
+Down [RotationState| MovementError RackH] -> [MovementError RotationState|MovementError RackH]
+
+
+(Remove Movement)
 [MovementError Moveable] -> [MovementError Stationary Moveable] again
 [MovementError RotationState] -> [MovementError Stationary RotationState] sfx0
+
 endloop
 
-
+(process final rotation state)
 [right Rot0] -> [Rot1]
 [right Rot1] -> [Rot2]
 [right Rot2] -> [Rot3]
@@ -238,8 +260,7 @@ endloop
 
 Horizontal [> Player] -> [Player]
 
-(final translation)
-
+(process final translation state)
 rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
 rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
 
@@ -274,8 +295,7 @@ LEVELS
 ...ooo.o.o...ooo..
 )
 
-..###.
-###.##
+######
 #p./.#
 #../.#
 ###/.#
@@ -293,5 +313,6 @@ g.o..#
 ....../.
 
 .o.........g
-p.....o...
+p.....oo..
 .--------...
+

@@ -2,7 +2,7 @@ title A Cog's Life
 author Dennis Au
 run_rules_on_level_start
 again_interval 0.5
-debug
+(debug)
 
 ========
 OBJECTS
@@ -124,7 +124,9 @@ A = ACWiser and Cog
 Background = Floor or Goal
 Rack = RackV or RackH
 Rotatable = Cog
-Obstacle = Wall
+Obstacle = Wall or Cog
+VObstacle = Obstacle or RackH
+ObstacleH = Obstacle or RackV
 RotationState = Rot0 or Rot1 or Rot2 or Rot3
 Moveable = Cog or Rack
 
@@ -221,6 +223,10 @@ Vertical [< RackV| > RackV] -> [MovementError RackV|MovementError RackV]
 Horizontal [> RackH| < RackH] -> [MovementError RackH|MovementError RackH]
 Horizontal [< RackH| > RackH] -> [MovementError RackH|MovementError RackH]
 
+(rack colliding with something)
+Vertical [> RackV| VObstacle] -> [MovementError RackV| VObstacle]
+Horizontal [> RackH| ObstacleH] -> [MovementError RackH| ObstacleH]
+
 (==========================
  Movement Error Propogation
  ==========================)
@@ -237,12 +243,12 @@ Vertical [MovementError RackV| RackV] -> [MovementError RackV| MovementError Rac
 Horizontal [MovementError RackH| RackH] -> [MovementError RackH| MovementError RackH]
 
 (rack -> cog)
-Right [RotationState|movementError RackV] -> [MovementError RotationState|MovementError RackV]
+Right [RotationState| movementError RackV] -> [MovementError RotationState|MovementError RackV]
 Down [RotationState| MovementError RackH] -> [MovementError RotationState|MovementError RackH]
 
 
 (Remove Movement)
-[MovementError Moveable] -> [MovementError Stationary Moveable] again
+[MovementError Moveable] -> [MovementError Stationary Moveable] sfx0 again
 [MovementError RotationState] -> [MovementError Stationary RotationState] sfx0
 
 endloop
@@ -295,24 +301,12 @@ LEVELS
 ...ooo.o.o...ooo..
 )
 
-######
-#p./.#
-#../.#
-###/.#
-.../.#
-g.o..#
-##o#.#
-.#...#
-.#####
-
-.......g
-.....o/.
-.../../.
-..p/.o/.
-..----/.
-....../.
-
-.o.........g
-p.....oo..
-.--------...
-
+.######
+.#p./.#
+.#../.#
+####/.#
+#.../.#
+#g.o..#
+###o#.#
+..#...#
+..#####

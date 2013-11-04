@@ -1,15 +1,14 @@
 title A Cog's Life
 author Dennis Au
 run_rules_on_level_start
-again_interval 0.5
-(debug)
+again_interval 0.2
 
 ========
 OBJECTS
 ========
 
 Floor
-DarkBlue
+Black
 
 
 Rot0
@@ -120,6 +119,7 @@ LEGEND
 P = Player and Cog
 C = CWiser and Cog
 A = ACWiser and Cog
+1 = Player
 
 Background = Floor or Goal
 Rack = RackV or RackH
@@ -151,6 +151,13 @@ RULES
 [MovementError] -> []
 [Rotatable No RotationState] -> [Rotatable Random RotationState]
 
+(intro movement)
+[Player No Cog] -> [Down Player] again
+
+(rotate enemies before messing with player movement)
+[CWiser RotationState No MovementError][Moving Player] -> [CWiser Right RotationState][Moving Player]
+[ACWiser RotationState No MovementError][Moving Player] -> [ACWiser Left RotationState][Moving Player]
+
 (=================
  Translation Phase
  =================)
@@ -174,11 +181,13 @@ Horizontal [> RackH| RackH] -> [> RackH| > RackH]
 (==============
  Rotation Phase
  ==============)
- 
+
 (use rotationstate to transfer rotation)
 
-[Right Player RotationState] -> [Right Player Right RotationState]
-[Left Player RotationState] -> [Left Player Left RotationState]
+[Right Player RotationState] -> [Player Right RotationState]
+[Left Player RotationState] -> [Player Left RotationState]
+
+
 
 startloop
 
@@ -187,8 +196,8 @@ startloop
  ===============)
 
 (cog -> cog)
-[Left Rotationstate| Rotationstate] -> [Left Rotationstate| Right Rotationstate]
-+[Right RotationState | RotationState] -> [Right RotationState| Left RotationState]
+[Left Rotationstate| stationary Rotationstate] -> [Left Rotationstate| Right Rotationstate]
++[Right RotationState | stationary RotationState] -> [Right RotationState| Left RotationState]
 
 (cog -> rack)
 Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
@@ -248,8 +257,13 @@ Down [RotationState| MovementError RackH] -> [MovementError RotationState|Moveme
 
 
 (Remove Movement)
-[MovementError Moveable] -> [MovementError Stationary Moveable] sfx0 again
-[MovementError RotationState] -> [MovementError Stationary RotationState] sfx0
+(with sfx if player)
+[MovementError Moveable][Player Cog] -> [MovementError Stationary Moveable][Player Cog] sfx0 again
+[MovementError RotationState][Player Cog] -> [MovementError Stationary RotationState][Player Cog] sfx0
+
+(silent for cutscreen)
+[MovementError Moveable] -> [MovementError Stationary Moveable]
+[MovementError RotationState] -> [MovementError Stationary RotationState]
 
 endloop
 
@@ -263,8 +277,6 @@ endloop
 [left rot3] -> [rot2]
 [left rot2] -> [rot1]
 [left rot1] -> [rot0]
-
-Horizontal [> Player] -> [Player]
 
 (process final translation state)
 rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
@@ -280,26 +292,29 @@ all goal on player
 LEVELS
 =======
 
-(
-........coo.......
-........o.o.......
-........ooo.......
-........o.o.......
-........o.o.......
-..........--------
 
-.coo.aoo.coo.a.coo
-.o...o.o.o...o.o..
-.o...o.o.o.....ooo
-.o...o.o.o.o.....o
-.ooo.ooo.ooo...ooo
+.......coo........1
+.......o.o.........
+.......ooo.........
+.......o.o.........
+.......o.o.........
+.........--------.g
 
-...c...a.coo.aoo..
-...o...o.o...o....
-...o...o.ooo.ooo..
-...o...o.o...o....
-...ooo.o.o...ooo..
-)
+coo.aoo.coo.a.coo.1
+o...o.o.o...o.o....
+o...o.o.o.....ooo..
+o...o.o.o.o.....o..
+ooo.ooo.ooo...ooo..
+..................g
+
+..c...a.coo.aoo...1
+..o...o.o...o......
+..o...o.ooo.ooo....
+..o...o.o...o......
+..ooo.o.o...ooo....
+..................g
+
+message I am but a cog.
 
 .######
 .#p./.#
@@ -311,6 +326,8 @@ LEVELS
 ..#...#
 ..#####
 
+message A mere part of a complex whole.
+
 ....#########
 #####..g#...#
 #...oo.##po.#
@@ -320,6 +337,8 @@ LEVELS
 .#..######..#
 .####....#..#
 .........####
+
+message On a search for meaning...
 
 .#########
 .#....#g.#
@@ -332,10 +351,12 @@ LEVELS
 .#../----#
 .#########
 
+message In all the busywork that I do.
+
 #########
 ....#o/g#
 .p..#o..#
-...##o.#.
+...##o.##
 ....oo.#.
 ...-...#.
 ..######.

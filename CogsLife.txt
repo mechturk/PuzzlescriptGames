@@ -129,6 +129,7 @@ VObstacle = Obstacle or RackH
 ObstacleH = Obstacle or RackV
 RotationState = Rot0 or Rot1 or Rot2 or Rot3
 Moveable = Cog or Rack
+Enemy = Cwiser or ACWiser
 
 =======
 SOUNDS
@@ -280,6 +281,7 @@ endloop
 
 (process final translation state)
 rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
+[> Cog > RotationState Enemy] -> [> Cog > RotationState > Enemy]
 rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
 
 
@@ -360,3 +362,13 @@ message In all the busywork that I do.
 ....oo.#.
 ...-...#.
 ..######.
+
+.......
+######.
+.p...#.
+##.a.g.
+.#...#.
+.#####.
+.......
+.......
+ 

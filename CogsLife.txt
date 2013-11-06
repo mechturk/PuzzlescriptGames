@@ -1,7 +1,7 @@
 title A Cog's Life
 author Dennis Au
 run_rules_on_level_start
-again_interval 0.1
+again_interval 0.10
 noaction
 
 ========
@@ -268,11 +268,7 @@ Down [RotationState| MovementError RackH] -> [MovementError RotationState|Moveme
 (with sfx if player)
 [Player MovementError] -> sfx0
 
-[MovementError Moveable][Player Cog] -> [MovementError Stationary Moveable][Player Cog] again
-[MovementError RotationState][Player Cog] -> [MovementError Stationary RotationState][Player Cog]
-
-(silent for cutscreen)
-[MovementError Moveable] -> [MovementError Stationary Moveable]
+[MovementError Moveable] -> [MovementError Stationary Moveable] again
 [MovementError RotationState] -> [MovementError Stationary RotationState]
 
 endloop

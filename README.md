@@ -3,6 +3,10 @@ PuzzlescriptGames
 
 A number of games written in puzzlescript.
 
+A Cog's Life
+------------
+A game about a small cog's search for meaning.
+
 Colour Chained
 --------------
 A match-3 clear all puzzlegame.

@@ -1,7 +1,7 @@
 title A Cog's Life
 author Dennis Au
 run_rules_on_level_start
-again_interval 0.2
+again_interval 0.1
 noaction
 
 ========
@@ -62,7 +62,7 @@ LightGrey Grey DarkGrey
 
 
 CWiser
-Blue
+DarkBlue
 .....
 .000.
 .0.0.
@@ -70,7 +70,7 @@ Blue
 .....
 
 ACWiser
-Green
+DarkBrown
 .....
 .000.
 .0.0.
@@ -94,7 +94,7 @@ Grey
 .....
 
 MovementError
-LightRed
+Red
 0...0
 .....
 .....
@@ -102,15 +102,21 @@ LightRed
 0...0
 
 goal g
-green
+LightGrey Grey
+.....
+01010
+01010
+01010
+.....
 
 Wall #
-Grey DarkGrey
-00100
-11111
-00001
-11111
-00100
+DarkBlue DarkGreen
+.1111
+01111
+00111
+00011
+0000.
+
 
 =======
 LEGEND
@@ -260,8 +266,10 @@ Down [RotationState| MovementError RackH] -> [MovementError RotationState|Moveme
 
 (Remove Movement)
 (with sfx if player)
-[MovementError Moveable][Player Cog] -> [MovementError Stationary Moveable][Player Cog] sfx0 again
-[MovementError RotationState][Player Cog] -> [MovementError Stationary RotationState][Player Cog] sfx0
+[Player MovementError] -> sfx0
+
+[MovementError Moveable][Player Cog] -> [MovementError Stationary Moveable][Player Cog] again
+[MovementError RotationState][Player Cog] -> [MovementError Stationary RotationState][Player Cog]
 
 (silent for cutscreen)
 [MovementError Moveable] -> [MovementError Stationary Moveable]
@@ -284,7 +292,6 @@ endloop
 rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
 [> Cog > RotationState Enemy] -> [> Cog > RotationState > Enemy]
 rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
-
 
 ==============
 WINCONDITIONS
@@ -329,7 +336,7 @@ message I am but a cog.
 ..#...#
 ..#####
 
-message A mere part of a complex whole.
+message A simple part of a complex whole.
 
 ....#########
 #####..g#...#
@@ -341,7 +348,7 @@ message A mere part of a complex whole.
 .####....#..#
 .........####
 
-message On a search for meaning...
+message I twist and turn searching for purpose.
 
 .#########
 .#....#g.#
@@ -354,17 +361,7 @@ message On a search for meaning...
 .#../----#
 .#########
 
-message In all the busywork that I do.
-
-#########
-....#o/g#
-.p..#o..#
-...##o.##
-....oo.#.
-...-...#.
-..######.
-
-message Seems like I'm not the only one.
+message Others turn as well.
 
 .############.
 .#.....#g..a#.
@@ -377,3 +374,17 @@ message Seems like I'm not the only one.
 #...##..ao..##
 #.p.##...#..##
 #############.
+
+message Are they searching for something too?
+
+....###########
+....#oooooo...#
+....#o.....--p#
+#####a........#
+#-----....#####
+##oo.c....#o/g#
+.#a...c.###o..#
+.#..ca.a..#o.##
+.#.o......oo.#.
+.#.o.a...-...#.
+.#############.

@@ -62,19 +62,19 @@ LightGrey Grey DarkGrey
 
 
 CWiser
-DarkBlue
+Orange LightGrey
 .....
 .000.
-.0.0.
-.000.
+.1.0.
+.111.
 .....
 
 ACWiser
-DarkBrown
+Blue LightGrey
 .....
-.000.
-.0.0.
-.000.
+.011.
+.0.1.
+.001.
 .....
 
 RackV /

@@ -2,6 +2,7 @@ title A Cog's Life
 author Dennis Au
 run_rules_on_level_start
 again_interval 0.2
+noaction
 
 ========
 OBJECTS
@@ -363,12 +364,16 @@ message In all the busywork that I do.
 ...-...#.
 ..######.
 
-.......
-######.
-.p...#.
-##.a.g.
-.#...#.
-.#####.
-.......
-.......
- 
+message Seems like I'm not the only one.
+
+.############.
+.#.....#g..a#.
+##.#a.c#..a.#.
+#c.##..#.a..#.
+#o.a#..#.##.#.
+##.##..#a##.##
+#c.c#.a..#c.c#
+##.##..c.#a.a#
+#...##..ao..##
+#.p.##...#..##
+#############.

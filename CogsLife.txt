@@ -3,6 +3,7 @@ author Dennis Au
 run_rules_on_level_start
 again_interval 0.10
 noaction
+background_color purple
 
 ========
 OBJECTS
@@ -85,7 +86,7 @@ White
 .000.
 .....
 
-Cog o
+Cog
 LightGrey Grey DarkGrey
 ..1..
 .000.
@@ -93,7 +94,7 @@ LightGrey Grey DarkGrey
 .000.
 ..2..
 
-TwiddleH ~
+TwiddleH
 LightGrey Grey DarkGrey
 .....
 .000.
@@ -101,7 +102,7 @@ LightGrey Grey DarkGrey
 .000.
 .....
 
-TwiddleV !
+TwiddleV
 LightGrey Grey DarkGrey
 ..1..
 .000.
@@ -110,7 +111,7 @@ LightGrey Grey DarkGrey
 ..2..
 
 
-RackV /
+RackV
 DarkGrey
 .0...
 .0...
@@ -118,7 +119,7 @@ DarkGrey
 .0...
 .0...
 
-RackH -
+RackH
 Grey
 ..0..
 00000
@@ -134,7 +135,7 @@ Red
 .....
 0...0
 
-goal g
+goal
 LightGrey Grey
 .....
 01010
@@ -142,7 +143,7 @@ LightGrey Grey
 01010
 .....
 
-Wall #
+Wall
 DarkBlue DarkGreen
 .1111
 01111
@@ -174,6 +175,7 @@ Moveable = Cog or Rack
 RotationState = RotU or RotR or RotD or RotL
 NextRotation = NRotU or NRotR or NRotD or NRotL
 
+(rotators)
 CU = RotU and NRotR
 CR = RotR and NRotD
 CD = RotD and NRotL
@@ -184,22 +186,41 @@ AL = RotL and NRotD
 AD = RotD and NRotR
 AR = RotR and NRotU
 
-. = Floor
+(=========
+ map tiles
+ =========)
 
-P = Player and Cog
+. = Floor
+g = Goal
+# = Wall
+o = Cog
+P = Player and Cog (main player)
+- = RackH
+/ = RackV
+
+(
+(twiddles)
+~ = TwiddleH
+! = TwiddleV
 T = Player and TwiddleV
+
+(rotors - cogs)
+C = CU and Cog and MovementError
+A = AU and Cog and MovementError
+
+(rotors - twiddles)
 ` = CU and TwiddleH and MovementError
 @ = AU and TwiddleH and MovementError
 1 = CU and TwiddleV and MovementError
 2 = AU and TwiddleV and MovementError
-C = CU and Cog and MovementError
-A = AU and Cog and MovementError
-0 = Player
 
+0 = Player (cutscene timer)
+)
 =======
 SOUNDS
 =======
 sfx0 40497702
+endlevel 54673903
 
 ================
 COLLISIONLAYERS
@@ -216,7 +237,7 @@ RULES
 (==============
  Initialisation
  ==============)
- 
+(randomize)
 (randomize autorotating cog initial orientations)
 [Player No RotationState][CU movementerror] -> [Player][movementerror random RotationState]
 [Player No RotationState][RotU no NextRotation movementerror] -> [Player][CU]
@@ -408,7 +429,7 @@ all goal on player
 =======
 LEVELS
 =======
-
+(
 .......coo........0
 .......o.o.........
 .......ooo.........
@@ -429,7 +450,7 @@ ooo.ooo.ooo...ooo..
 ..o...o.o...o......
 ..ooo.o.o...ooo....
 ..................g
-
+)
 message I am but a cog.
 
 .######
@@ -454,11 +475,25 @@ message A simple part of a complex whole.
 .####....#..#
 .........####
 
-message I twist and turn searching for purpose.
+
+########...
+#..#.#.#...
+#p.././####
+#..-/---..#
+####.#...##
+...##.../#.
+....#..-/##
+....#..//g#
+....#.--.##
+....######.
+
+
+
+(message I twist and turn searching for purpose.
 
 .#########
 .#....#g.#
-.#.po/#o/#
+.#.p./#o/#
 ##./-/#o.#
 #.---.#o.#
 #o##.##o.#
@@ -466,7 +501,8 @@ message I twist and turn searching for purpose.
 ##../o...#
 .#../----#
 .#########
-
+)
+(
 message Others turn as well.
 
 .############.
@@ -494,3 +530,4 @@ message Are they searching for something too?
 .#.o......oo.#.
 .#.o.a...-...#.
 .#############.
+)

@@ -3,7 +3,6 @@ author Dennis Au
 run_rules_on_level_start
 again_interval 0.10
 noaction
-debug
 
 ========
 OBJECTS
@@ -165,8 +164,8 @@ AR = RotR and NRotU
 . = Floor
 
 P = Player and Cog
-C = CU and Cog
-A = AU and Cog
+C = CU and Cog and MovementError
+A = AU and Cog and MovementError
 1 = Player
 
 =======
@@ -186,12 +185,32 @@ RotationState
 ======
 RULES
 ======
+(==============
+ Initialisation
+ ==============)
+ 
+(randomize autorotating cog initial orientations)
+[Player No RotationState][CU movementerror] -> [Player][movementerror random RotationState]
+[Player No RotationState][RotU no NextRotation movementerror] -> [Player][CU]
+[Player No RotationState][RotR no NextRotation movementerror] -> [Player][CR]
+[Player No RotationState][RotD no NextRotation movementerror] -> [Player][CD]
+[Player No RotationState][RotL no NextRotation movementerror] -> [Player][CL]
 
-[MovementError] -> []
+[Player No RotationState][AU movementerror] -> [Player][movementerror random RotationState]
+[Player No RotationState][RotU no NextRotation movementerror] -> [Player][AU]
+[Player No RotationState][RotR no NextRotation movementerror] -> [Player][AR]
+[Player No RotationState][RotD no NextRotation movementerror] -> [Player][AD]
+[Player No RotationState][RotL no NextRotation movementerror] -> [Player][AL]
+
+(randomize remaining cog orientations)
 [Rotatable No RotationState] -> [Rotatable Random RotationState]
+
+(clear movementerror)
+[MovementError] -> []
 
 (intro movement)
 [Player No Cog] -> [Down Player] again
+
 
 (rotate enemies before messing with player movement)
 [CU No MovementError][Moving Player] -> [Right CU][Moving Player]
@@ -203,7 +222,6 @@ RULES
 [AR No MovementError][Moving Player] -> [Left AR][Moving Player]
 [AD No MovementError][Moving Player] -> [Left AD][Moving Player]
 [AL No MovementError][Moving Player] -> [Left AL][Moving Player]
-
 
 
 (=================

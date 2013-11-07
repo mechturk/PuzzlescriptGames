@@ -93,6 +93,22 @@ LightGrey Grey DarkGrey
 .000.
 ..2..
 
+TwiddleH ~
+LightGrey Grey DarkGrey
+.....
+.000.
+20.01
+.000.
+.....
+
+TwiddleV !
+LightGrey Grey DarkGrey
+..1..
+.000.
+.0.0.
+.000.
+..2..
+
 
 RackV /
 DarkGrey
@@ -141,15 +157,22 @@ LEGEND
 
 
 Background = Floor or Goal
+
 Rack = RackV or RackH
-Rotatable = Cog
+Twiddle = TwiddleH or TwiddleV
+
+Rotatable = Cog or Twiddle
+HRotatable = Cog or TwiddleH
+VRotatable = Cog or TwiddleV
+
 Obstacle = Wall or Cog
 VObstacle = Obstacle or RackH
 ObstacleH = Obstacle or RackV
-RotationState = RotU or RotR or RotD or RotL
-NextRotation = NRotU or NRotR or NRotD or NRotL
+
 Moveable = Cog or Rack
 
+RotationState = RotU or RotR or RotD or RotL
+NextRotation = NRotU or NRotR or NRotD or NRotL
 
 CU = RotU and NRotR
 CR = RotR and NRotD
@@ -164,9 +187,13 @@ AR = RotR and NRotU
 . = Floor
 
 P = Player and Cog
+` = CU and TwiddleH and MovementError
+@ = AU and TwiddleH and MovementError
+1 = CU and TwiddleV and MovementError
+2 = AU and TwiddleV and MovementError
 C = CU and Cog and MovementError
 A = AU and Cog and MovementError
-1 = Player
+0 = Player
 
 =======
 SOUNDS
@@ -203,7 +230,9 @@ RULES
 [Player No RotationState][RotL no NextRotation movementerror] -> [Player][AL]
 
 (randomize remaining cog orientations)
-[Rotatable No RotationState] -> [Rotatable Random RotationState]
+[Cog No RotationState] -> [Cog Random RotationState]
+[TwiddleV No RotationState] -> [TwiddleV Random RotU Random RotD]
+[TwiddleH No RotationState] -> [TwiddleH Random RotL Random RotR]
 
 (clear movementerror)
 [MovementError] -> []
@@ -258,35 +287,41 @@ startloop
  Motion Transfer
  ===============)
 
-(cog -> cog)
-[Left Rotationstate| stationary Rotationstate] -> [Left Rotationstate| Right Rotationstate]
-+[Right RotationState | stationary RotationState] -> [Right RotationState| Left RotationState]
+(cog/twiddle -> cog/twiddle)
+horizontal [Hrotatable Left Rotationstate| Hrotatable stationary Rotationstate] -> [Hrotatable Left Rotationstate| Hrotatable Right Rotationstate]
++ horizontal [Hrotatable Right RotationState | Hrotatable stationary RotationState] -> [Hrotatable Right RotationState| Hrotatable Left RotationState]
++ vertical [Vrotatable Left Rotationstate| Vrotatable stationary Rotationstate] -> [Vrotatable Left Rotationstate| Vrotatable Right Rotationstate]
++ vertical [Vrotatable Right RotationState | Vrotatable stationary RotationState] -> [Vrotatable Right RotationState| Vrotatable Left RotationState]
 
 (cog -> rack)
-Right [Right RotationState|RackV] -> [Right RotationState| Down RackV]
-Right [Left RotationState|RackV] -> [Left RotationState| Up RackV]
+Right [Hrotatable Right RotationState|RackV] -> [HRotatable Right RotationState| Down RackV]
+Right [Hrotatable Left RotationState|RackV] -> [Hrotatable Left RotationState| Up RackV]
 
-Down [Right RotationState| RackH] -> [Right RotationState| Left RackH]
-Down [Left RotationState| RackH] -> [Left RotationState| Right RackH]
+Down [Vrotatable Right RotationState| RackH] -> [Vrotatable Right RotationState| Left RackH]
+Down [Vrotatable Left RotationState| RackH] -> [Vrotatable Left RotationState| Right RackH]
 
 (rack -> rack)
 Vertical [Parallel RackV| Stationary RackV] -> [Parallel RackV| Parallel RackV]
 Horizontal [Parallel RackH| Stationary RackH] -> [Parallel RackH| Parallel RackH]
 
 (rack -> cog)
-Right [RotationState|Down RackV] -> [Right RotationState| Down RackV]
-Right [RotationState|Up RackV] -> [Left RotationState| Up RackV]
+Right [Hrotatable RotationState|Down RackV] -> [Hrotatable Right RotationState| Down RackV]
+Right [Hrotatable RotationState|Up RackV] -> [Hrotatable Left RotationState| Up RackV]
 
-Down [RotationState| Left RackH] -> [Right RotationState| Left RackH]
-Down [RotationState| Right RackH] -> [Left RotationState| Right RackH]
+Down [Vrotatable RotationState| Left RackH] -> [Vrotatable Right RotationState| Left RackH]
+Down [Vrotatable RotationState| Right RackH] -> [Vrotatable Left RotationState| Right RackH]
 
 (=========================
  Movement Error Generation
  =========================)
 
-(opposing cogs)
-[left RotationState|left RotationState] -> [MovementError RotationState|MovementError RotationState]
-[right RotationState|right RotationState] -> [MovementError RotationState|MovementError RotationState]
+(opposing rotatables)
+right [Hrotatable left RotationState|Hrotatable left RotationState] -> [Hrotatable MovementError RotationState|Hrotatable MovementError RotationState]
+right [Hrotatable right RotationState|Hrotatable right RotationState] -> [Hrotatable MovementError RotationState|Hrotatable MovementError RotationState]
+
+down [Vrotatable left RotationState|Vrotatable left RotationState] -> [Vrotatable MovementError RotationState|Vrotatable MovementError RotationState]
+down [Vrotatable right RotationState|Vrotatable right RotationState] -> [Vrotatable MovementError RotationState|Vrotatable MovementError RotationState]
+
 
 (split/crushed racks)
 Vertical [> RackV| < RackV] -> [MovementError RackV|MovementError RackV]
@@ -303,11 +338,12 @@ Horizontal [> RackH| ObstacleH] -> [MovementError RackH| ObstacleH]
  Movement Error Propogation
  ==========================)
 
-(cog -> cog)
-[MovementError RotationState| RotationState] -> [MovementError RotationState| MovementError RotationState]
+(rotatable -> rotatable)
+vertical [Vrotatable MovementError RotationState|Vrotatable  RotationState] -> [Vrotatable MovementError RotationState|Vrotatable  MovementError RotationState]
+horizontal [Hrotatable MovementError RotationState| Hrotatable RotationState] -> [Hrotatable MovementError RotationState|Hrotatable  MovementError RotationState]
 
 (cog -> rack)
-Right [MovementError RotationState|RackV] -> [MovementError RotationState|MovementError RackV]
+Right [Hrotatable MovementError RotationState|RackV] -> [Hrotatable MovementError RotationState|MovementError RackV]
 Down [MovementError RotationState|RackH] -> [MovementError RotationState|MovementError RackH]
 
 (rack -> rack)
@@ -315,8 +351,8 @@ Vertical [MovementError RackV| RackV] -> [MovementError RackV| MovementError Rac
 Horizontal [MovementError RackH| RackH] -> [MovementError RackH| MovementError RackH]
 
 (rack -> cog)
-Right [RotationState| movementError RackV] -> [MovementError RotationState|MovementError RackV]
-Down [RotationState| MovementError RackH] -> [MovementError RotationState|MovementError RackH]
+Right [Hrotatable RotationState| movementError RackV] -> [Hrotatable MovementError RotationState|MovementError RackV]
+Down [Vrotatable RotationState| MovementError RackH] -> [Vrotatable MovementError RotationState|MovementError RackH]
 
 
 (Remove Movement)
@@ -333,30 +369,34 @@ endloop
 
 [moving RotationState NextRotation] -> [moving RotationState moving NextRotation]
 
-[right RotU] -> [RotR]
-[right RotR] -> [RotD]
-[right RotD] -> [RotL]
-[right RotL] -> [RotU]
+(use action to mark that there has been a rotation)
+[right RotU] -> [action RotR]
+[right RotR] -> [action RotD]
+[right RotD] -> [action RotL]
+[right RotL] -> [action RotU]
 
-[left RotU] -> [RotL]
-[left RotL] -> [RotD]
-[left RotD] -> [RotR]
-[left RotR] -> [RotU]
+[left RotU] -> [action RotL]
+[left RotL] -> [action RotD]
+[left RotD] -> [action RotR]
+[left RotR] -> [action RotU]
 
-[right NRotU] -> [NRotR]
-[right NRotR] -> [NRotD]
-[right NRotD] -> [NRotL]
-[right NRotL] -> [NRotU]
+[right NRotU] -> [action NRotR]
+[right NRotR] -> [action NRotD]
+[right NRotD] -> [action NRotL]
+[right NRotL] -> [action NRotU]
 
-[left NRotU] -> [NRotL]
-[left NRotL] -> [NRotD]
-[left NRotD] -> [NRotR]
-[left NRotR] -> [NRotU]
+[left NRotU] -> [action NRotL]
+[left NRotL] -> [action NRotD]
+[left NRotD] -> [action NRotR]
+[left NRotR] -> [action NRotU]
 
+(if a twiddle has rotated, change the sprite)
+[action RotationState TwiddleV] -> [RotationState TwiddleH]
+[action RotationState TwiddleH] -> [RotationState TwiddleV]
 
 (process final translation state)
-rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
-[> Cog > RotationState NextRotation] -> [> Cog > RotationState > NextRotation]
+rigid [Player > Cog |Rotatable RotationState] -> [Player > Cog| > Rotatable > RotationState]
+[> Rotatable > RotationState NextRotation] -> [> Rotatable > RotationState > NextRotation]
 rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
 
 ==============
@@ -368,22 +408,21 @@ all goal on player
 LEVELS
 =======
 
-
-.......coo........1
+.......coo........0
 .......o.o.........
 .......ooo.........
 .......o.o.........
 .......o.o.........
 .........--------.g
 
-coo.aoo.coo.a.coo.1
+coo.aoo.`oo.a.@oo.0
 o...o.o.o...o.o....
 o...o.o.o.....ooo..
 o...o.o.o.o.....o..
 ooo.ooo.ooo...ooo..
 ..................g
 
-..c...a.coo.aoo...1
+..c...1.2oo.aoo...0
 ..o...o.o...o......
 ..o...o.ooo.ooo....
 ..o...o.o...o......

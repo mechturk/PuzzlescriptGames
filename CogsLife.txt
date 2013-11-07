@@ -187,6 +187,7 @@ AR = RotR and NRotU
 . = Floor
 
 P = Player and Cog
+T = Player and TwiddleV
 ` = CU and TwiddleH and MovementError
 @ = AU and TwiddleH and MovementError
 1 = CU and TwiddleV and MovementError
@@ -238,7 +239,7 @@ RULES
 [MovementError] -> []
 
 (intro movement)
-[Player No Cog] -> [Down Player] again
+[Player No Rotatable] -> [Down Player] again
 
 
 (rotate enemies before messing with player movement)
@@ -257,24 +258,24 @@ RULES
  Translation Phase
  =================)
 
-(use cog for collision detection)
+(use Rotatable for collision detection)
 (use rotationstate to transfer rotation)
-Vertical [> Player Cog RotU] -> [Player > Cog RotU]
-Horizontal [> Player Cog RotU] -> [Player Cog > RotU]
+Vertical [> Player Rotatable RotU] -> [Player > Rotatable RotU]
+Horizontal [> Player Rotatable RotU] -> [Player Rotatable > RotU]
 
-Vertical [> Player Cog RotD] -> [Player > Cog RotD]
-Horizontal [> Player Cog RotD] -> [Player Cog < RotD]
+Vertical [> Player Rotatable RotD] -> [Player > Rotatable RotD]
+Horizontal [> Player Rotatable RotD] -> [Player Rotatable < RotD]
 
-Horizontal [> Player Cog RotR] -> [Player > Cog RotR]
-Vertical [> Player Cog RotR] -> [Player Cog ^ RotR]
+Horizontal [> Player Rotatable RotR] -> [Player > Rotatable RotR]
+Vertical [> Player Rotatable RotR] -> [Player Rotatable ^ RotR]
 
-Horizontal [> Player Cog RotL] -> [Player > Cog RotL]
-Vertical [> Player Cog RotL] -> [Player Cog V RotL]
+Horizontal [> Player Rotatable RotL] -> [Player > Rotatable RotL]
+Vertical [> Player Rotatable RotL] -> [Player Rotatable V RotL]
 
 
-Vertical [Player > Cog| RackV] -> [Player > Cog| > RackV]
+Vertical [Player > Rotatable| RackV] -> [Player > Rotatable| > RackV]
 Vertical [> RackV| RackV] -> [> RackV| > RackV]
-Horizontal [Player > Cog| RackH] -> [Player > Cog| > RackH]
+Horizontal [Player > Rotatable| RackH] -> [Player > Rotatable| > RackH]
 Horizontal [> RackH| RackH] -> [> RackH| > RackH]
 
 (==============
@@ -395,9 +396,9 @@ endloop
 [action RotationState TwiddleH] -> [RotationState TwiddleV]
 
 (process final translation state)
-rigid [Player > Cog |Rotatable RotationState] -> [Player > Cog| > Rotatable > RotationState]
+rigid [Player > Rotatable |Rotatable RotationState] -> [Player > Rotatable| > Rotatable > RotationState]
 [> Rotatable > RotationState NextRotation] -> [> Rotatable > RotationState > NextRotation]
-rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
+rigid [Player > Rotatable RotationState] -> [> Player > Rotatable > RotationState]
 
 ==============
 WINCONDITIONS

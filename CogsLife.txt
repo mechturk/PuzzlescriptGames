@@ -45,6 +45,39 @@ DarkGreen
 .....
 .....
 
+NRotU
+LightGreen
+.....
+..0..
+.....
+.....
+.....
+
+NRotR
+LightGreen
+.....
+.....
+...0.
+.....
+.....
+
+NRotD
+LightGreen
+.....
+.....
+.....
+..0..
+.....
+
+NRotL
+LightGreen
+.....
+.....
+.0...
+.....
+.....
+
+
 Player
 White
 .....
@@ -61,22 +94,6 @@ LightGrey Grey DarkGrey
 .000.
 ..2..
 
-
-CWiser
-Orange LightGrey
-.....
-.000.
-.1.0.
-.111.
-.....
-
-ACWiser
-Blue LightGrey
-.....
-.011.
-.0.1.
-.001.
-.....
 
 RackV /
 DarkGrey
@@ -122,12 +139,7 @@ DarkBlue DarkGreen
 =======
 LEGEND
 =======
-. = Floor
 
-P = Player and Cog
-C = CWiser and Cog
-A = ACWiser and Cog
-1 = Player
 
 Background = Floor or Goal
 Rack = RackV or RackH
@@ -136,8 +148,26 @@ Obstacle = Wall or Cog
 VObstacle = Obstacle or RackH
 ObstacleH = Obstacle or RackV
 RotationState = RotU or RotR or RotD or RotL
+NextRotation = NRotU or NRotR or NRotD or NRotL
 Moveable = Cog or Rack
-Enemy = Cwiser or ACWiser
+
+
+CU = RotU and NRotR
+CR = RotR and NRotD
+CD = RotD and NRotL
+CL = RotL and NRotU
+
+AU = RotU and NRotL
+AL = RotL and NRotD
+AD = RotD and NRotR
+AR = RotR and NRotU
+
+. = Floor
+
+P = Player and Cog
+C = CU and Cog
+A = AU and Cog
+1 = Player
 
 =======
 SOUNDS
@@ -149,7 +179,7 @@ COLLISIONLAYERS
 ================
 Background
 Rotatable, Rack, Wall
-Player, CWiser, ACWiser
+Player, NextRotation
 MovementError
 RotationState
 
@@ -164,8 +194,17 @@ RULES
 [Player No Cog] -> [Down Player] again
 
 (rotate enemies before messing with player movement)
-[CWiser RotationState No MovementError][Moving Player] -> [CWiser Right RotationState][Moving Player]
-[ACWiser RotationState No MovementError][Moving Player] -> [ACWiser Left RotationState][Moving Player]
+[CU No MovementError][Moving Player] -> [Right CU][Moving Player]
+[CR No MovementError][Moving Player] -> [Right CR][Moving Player]
+[CD No MovementError][Moving Player] -> [Right CD][Moving Player]
+[CL No MovementError][Moving Player] -> [Right CL][Moving Player]
+
+[AU No MovementError][Moving Player] -> [Left AU][Moving Player]
+[AR No MovementError][Moving Player] -> [Left AR][Moving Player]
+[AD No MovementError][Moving Player] -> [Left AD][Moving Player]
+[AL No MovementError][Moving Player] -> [Left AL][Moving Player]
+
+
 
 (=================
  Translation Phase
@@ -268,10 +307,14 @@ Down [RotationState| MovementError RackH] -> [MovementError RotationState|Moveme
 
 [MovementError Moveable] -> [MovementError Stationary Moveable] again
 [MovementError RotationState] -> [MovementError Stationary RotationState]
+[MovementError NextRotation] -> [MovementError Stationary NextRotation]
 
 endloop
 
 (process final rotation state)
+
+[moving RotationState NextRotation] -> [moving RotationState moving NextRotation]
+
 [right RotU] -> [RotR]
 [right RotR] -> [RotD]
 [right RotD] -> [RotL]
@@ -282,9 +325,20 @@ endloop
 [left RotD] -> [RotR]
 [left RotR] -> [RotU]
 
+[right NRotU] -> [NRotR]
+[right NRotR] -> [NRotD]
+[right NRotD] -> [NRotL]
+[right NRotL] -> [NRotU]
+
+[left NRotU] -> [NRotL]
+[left NRotL] -> [NRotD]
+[left NRotD] -> [NRotR]
+[left NRotR] -> [NRotU]
+
+
 (process final translation state)
 rigid [Player > Cog |Cog RotationState] -> [Player > Cog| > Cog > RotationState]
-[> Cog > RotationState Enemy] -> [> Cog > RotationState > Enemy]
+[> Cog > RotationState NextRotation] -> [> Cog > RotationState > NextRotation]
 rigid [Player > Cog RotationState] -> [> Player > Cog > RotationState]
 
 ==============

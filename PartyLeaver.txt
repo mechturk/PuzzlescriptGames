@@ -32,15 +32,49 @@ DarkBrown Brown
 00001
 
 Wall
-Red DarkRed
+DarkGrey Grey
 00010
 11111
 01000
 11111
 00010
 
+HostU
+Green Black
+.11..
+0110.
+.....
+.....
+.....
+
+
+HostR
+Green Black
+...0.
+...11
+...11
+...0.
+.....
+
+
+HostD
+Green Black
+.....
+.....
+.....
+.0110
+..11.
+
+HostL
+Green Black
+.....
+.0...
+11...
+11...
+.0...
+
 PlayerU
-Orange Green Black
+Orange Blue Black
 .....
 .....
 0...0
@@ -48,7 +82,7 @@ Orange Green Black
 ..22.
 
 PlayerR
-Orange Green Black
+Orange Blue Black
 ..0..
 .1...
 22...
@@ -56,7 +90,7 @@ Orange Green Black
 .10..
 
 PlayerD
-Orange Green Black
+Orange Blue Black
 .22..
 1221.
 0...0
@@ -64,39 +98,39 @@ Orange Green Black
 .....
 
 PlayerL
-Orange Green Black
+Orange Blue Black
 ..01.
 ...22
 ...22
 ...1.
 ..0..
 
-PersonD
-Blue Black
+PartierD
+Red Black
 .....
 .....
 .....
 .0110
 ..11.
 
-PersonR
-Blue Black
+PartierR
+Red Black
 ...0.
 ...11
 ...11
 ...0.
 .....
 
-PersonU
-Blue Black 
+PartierU
+Red Black 
 .11..
 0110.
 .....
 .....
 .....
 
-PersonL
-Blue Black
+PartierL
+Red Black
 .....
 .0...
 11...
@@ -111,7 +145,7 @@ Black
 .....
 .....
 
-RPerson
+RPartier
 Black
 .....
 ..00.
@@ -123,25 +157,41 @@ Black
 LEGEND
 =======
 Background = Floor or DanceFloor
+
+PersonU = PartierU or HostU
+PersonR = PartierR or HostR
+PersonD = PartierD or HostD
+PersonL = PartierL or HostL
+
 Player = PlayerU or PlayerR or PlayerD or PlayerL
+Partier = PartierU or PartierR or PartierD or PartierL
+Host = HostU or HostR or HostD or HostL
 Person = PersonU or PersonR or PersonD or PersonL
-Obstacle = Person or Wall
+
+Obstacle = Wall or Person
 
 # = Wall
 P = PlayerR
-U = PersonU and Floor
-R = PersonR and Floor
-D = PersonD and Floor
-L = PersonL and Floor
+Q = PlayerL
+
+U = PartierU and Floor
+R = PartierR and Floor
+D = PartierD and Floor
+L = PartierL and Floor
 E = Exit
 
 . = Floor
 , = DanceFloor
-N = RPerson and DanceFloor
-1 = PersonU and DanceFloor
-2 = PersonR and DanceFloor
-3 = PersonD and DanceFloor
-4 = PersonL and DanceFloor
+N = RPartier and DanceFloor
+1 = PartierU and DanceFloor
+2 = PartierR and DanceFloor
+3 = PartierD and DanceFloor
+4 = PartierL and DanceFloor
+5 = HostU and Floor
+6 = HostR and Floor
+7 = HostD and Floor
+8 = HostL and Floor
+
 
 =======
 SOUNDS
@@ -153,41 +203,41 @@ COLLISIONLAYERS
 Background
 Exit
 Player, Wall
-RPerson, Person
+RPartier, Partier, Host
 Dance
 
 ======
 RULES
 ======
-
-[RPerson] -> [Random Person]
+(people are pretty random on the dance floor)
+[RPartier] -> [Random Partier]
 
 (spin 'round and 'round)
-[Action PlayerU No Person] -> [PlayerR]
-[Action PlayerR No Person] -> [PlayerD]
-[Action PlayerD No Person] -> [PlayerL]
-[Action PlayerL No Person] -> [PlayerU]
+[Action PlayerU No Partier] -> [PlayerR]
+[Action PlayerR No Partier] -> [PlayerD]
+[Action PlayerD No Partier] -> [PlayerL]
+[Action PlayerL No Partier] -> [PlayerU]
 
 (politely ask for room to move past)
-Up [> PlayerU PersonU| No Obstacle] -> [> PlayerU > PersonU|]
-Right [> PlayerR PersonR| No Obstacle] -> [> PlayerR > PersonR|]
-Down [> PlayerD PersonD| No Obstacle] -> [> PlayerD > PersonD|]
-Left [> PlayerL PersonL| No Obstacle] -> [> PlayerL > PersonL|]
+Up [> PlayerU PartierU| No Obstacle] -> [> PlayerU > PartierU|]
+Right [> PlayerR PartierR| No Obstacle] -> [> PlayerR > PartierR|]
+Down [> PlayerD PartierD| No Obstacle] -> [> PlayerD > PartierD|]
+Left [> PlayerL PartierL| No Obstacle] -> [> PlayerL > PartierL|]
 
-(can't push a person into an obstacle)
+(can't push a Partier into an obstacle)
 [> Player|Wall] -> [Player |Wall]
-Up [> PlayerU PersonU| PersonU] -> [PlayerU PersonU|PersonU]
-Right [> PlayerR PersonR| PersonR] -> [PlayerR PersonR|PersonR]
-Down [> PlayerD PersonD| PersonD] -> [PlayerD PersonD|PersonD]
-Left [> PlayerL PersonL| PersonL] -> [PlayerL PersonL|PersonL]
+Up [> PlayerU PartierU| PartierU] -> [PlayerU PartierU|PartierU]
+Right [> PlayerR PartierR| PartierR] -> [PlayerR PartierR|PartierR]
+Down [> PlayerD PartierD| PartierD] -> [PlayerD PartierD|PartierD]
+Left [> PlayerL PartierL| PartierL] -> [PlayerL PartierL|PartierL]
 
-(can't move backward into another person)
+(can't move backward into another Person)
 Down [> PlayerU | PersonU] -> [PlayerU| PersonU]
 Left [> PlayerR | PersonR] -> [PlayerR| PersonR]
 Up [> PlayerD | PersonD] -> [PlayerD| PersonD]
 Right [> PlayerL | PersonL] -> [PlayerL| PersonL]
 
-(can slide past a person or go up to them)
+(can slide past a Person or go up to them)
 [> PlayerU| PersonU] -> [|PlayerU PersonU]
 [> PlayerR| PersonR] -> [|PlayerR PersonR]
 [> PlayerD| PersonD] -> [|PlayerD PersonD]
@@ -196,23 +246,31 @@ Right [> PlayerL | PersonL] -> [PlayerL| PersonL]
 (otherwise, can't move into the same square)
 [> Player| Person] -> [Player| Person]
 
-late [Person No Player DanceFloor] -> [Person Dance DanceFloor]
-late [Dance PersonU DanceFloor] -> [random PersonR random PersonL DanceFloor]
-late [Dance PersonR DanceFloor] -> [random PersonD random PersonU DanceFloor]
-late [Dance PersonD DanceFloor] -> [random PersonL random PersonR DanceFloor]
-late [Dance PersonL DanceFloor] -> [random PersonU random PersonD DanceFloor]
+(a bit caustic, but once we've said goodbye to the hosts, they're just as in the way as everyone else)
+late [PlayerU HostU] -> [PlayerU PartierU]
+late [PlayerR HostR] -> [PlayerR PartierR]
+late [PlayerD HostD] -> [PlayerD PartierD]
+late [PlayerL HostL] -> [PlayerL PartierL]
+
+(dancers, dance!)
+late [Partier No Player DanceFloor] -> [Partier Dance DanceFloor]
+late [Dance PartierU DanceFloor] -> [random PartierR random PartierL DanceFloor]
+late [Dance PartierR DanceFloor] -> [random PartierD random PartierU DanceFloor]
+late [Dance PartierD DanceFloor] -> [random PartierL random PartierR DanceFloor]
+late [Dance PartierL DanceFloor] -> [random PartierU random PartierD DanceFloor]
+
 
 ==============
 WINCONDITIONS
 ==============
 Some Player on Exit
+No Host
 
 =======
 LEVELS
 =======
-
 message Everyone's gone to the party. I better go too.
-
+(Intro 1)
 ##########
 #........#
 #p.......#
@@ -221,7 +279,7 @@ message Everyone's gone to the party. I better go too.
 
 message That's right, I forgot. I hate parties. Get me outta here.
 message [Note: Press x to turn]
-
+(Intro 2)
 ########e#
 #...##.rl#
 #...##...#
@@ -232,7 +290,7 @@ message [Note: Press x to turn]
 ##########
 
 message Excuse me, coming through.
-
+(Intro 3)
 ########
 #..r...#
 #..d##.#
@@ -241,7 +299,7 @@ message Excuse me, coming through.
 ########
 
 message What is this, some weird conga line?
-
+(Line 1)
 ######e##
 ######r##
 #.dllll##
@@ -249,7 +307,7 @@ message What is this, some weird conga line?
 #########
 
 message I don't even...
-
+(Line 2)
 ########
 #.ldue##
 #.dd####
@@ -258,7 +316,7 @@ message I don't even...
 ########
 
 message Oh great. Now I have to get past the dance floor.
-
+(Dance 1)
 #########
 #p.nnnn.#
 #..nnnn.#
@@ -268,8 +326,17 @@ message Oh great. Now I have to get past the dance floor.
 #########
 
 message How awkward.
-
+(Dance 2)
 #######e#
 #r.r,nrl#
 #pdr,nd.#
 #########
+
+message I'd better say goodbye to the host before I leave.
+(Host 1)
+#e#####
+#.l.uq#
+#r.url#
+#.l..u#
+#d7d###
+#####..

@@ -39,6 +39,38 @@ DarkGrey Grey
 11111
 00010
 
+FurnitureUL
+DarkBrown
+00...
+00...
+.....
+.....
+.....
+
+FurnitureUR
+DarkBrown
+...00
+...00
+.....
+.....
+.....
+
+FurnitureDL
+DarkBrown
+.....
+.....
+.....
+00...
+00...
+
+FurnitureDR
+DarkBrown
+.....
+.....
+.....
+...00
+...00
+
 HostU
 Green Black
 .11..
@@ -163,12 +195,29 @@ PersonR = PartierR or HostR
 PersonD = PartierD or HostD
 PersonL = PartierL or HostL
 
+PlayerUR = PlayerU or PlayerR
+PlayerUL = PlayerU or PlayerL
+PlayerDR = PlayerD or PlayerR
+PlayerDL = PlayerD or PlayerL
+
 Player = PlayerU or PlayerR or PlayerD or PlayerL
 Partier = PartierU or PartierR or PartierD or PartierL
 Host = HostU or HostR or HostD or HostL
 Person = PersonU or PersonR or PersonD or PersonL
 
-Obstacle = Wall or Person
+FurnitureU = FurnitureUR or FurnitureUL
+FurnitureR = FurnitureUR or FurnitureDR
+FurnitureD = FurnitureDR or FurnitureDL
+FurnitureL = FurnitureUL or FurnitureDL
+
+Furniture = FurnitureUL or FurnitureUR or FurnitureDL or FurnitureDR
+
+Obstacle = Wall or Person or Furniture
+
+ObstacleU = FurnitureU or PersonU
+ObstacleR = FurnitureR or PersonR
+ObstacleL = FurnitureL or PersonL
+ObstacleD = FurnitureD or PersonD
 
 # = Wall
 P = PlayerR
@@ -192,6 +241,10 @@ N = RPartier and DanceFloor
 7 = HostD and Floor
 8 = HostL and Floor
 
+9 = FurnitureUL
+0 = FurnitureUR
+- = FurnitureDL
++ = FurnitureDR
 
 =======
 SOUNDS
@@ -203,7 +256,7 @@ COLLISIONLAYERS
 Background
 Exit
 Player, Wall
-RPartier, Partier, Host
+RPartier, Partier, Host, Furniture
 Dance
 
 ======
@@ -213,10 +266,15 @@ RULES
 [RPartier] -> [Random Partier]
 
 (spin 'round and 'round)
-[Action PlayerU No Partier] -> [PlayerR]
-[Action PlayerR No Partier] -> [PlayerD]
-[Action PlayerD No Partier] -> [PlayerL]
-[Action PlayerL No Partier] -> [PlayerU]
+[Action PlayerU FurnitureUR] -> [PlayerR FurnitureUR]
+[Action PlayerR FurnitureDR] -> [PlayerD FurnitureDR]
+[Action PlayerD FurnitureDL] -> [PlayerL FurnitureDL]
+[Action PlayerL FurnitureUL] -> [PlayerU FurnitureUL]
+
+[Action PlayerU No Partier No Furniture] -> [PlayerR]
+[Action PlayerR No Partier No Furniture] -> [PlayerD]
+[Action PlayerD No Partier No Furniture] -> [PlayerL]
+[Action PlayerL No Partier No Furniture] -> [PlayerU]
 
 (politely ask for room to move past)
 Up [> PlayerU PartierU| No Obstacle] -> [> PlayerU > PartierU|]
@@ -224,12 +282,13 @@ Right [> PlayerR PartierR| No Obstacle] -> [> PlayerR > PartierR|]
 Down [> PlayerD PartierD| No Obstacle] -> [> PlayerD > PartierD|]
 Left [> PlayerL PartierL| No Obstacle] -> [> PlayerL > PartierL|]
 
-(can't push a Partier into an obstacle)
 [> Player|Wall] -> [Player |Wall]
-Up [> PlayerU PartierU| PartierU] -> [PlayerU PartierU|PartierU]
-Right [> PlayerR PartierR| PartierR] -> [PlayerR PartierR|PartierR]
-Down [> PlayerD PartierD| PartierD] -> [PlayerD PartierD|PartierD]
-Left [> PlayerL PartierL| PartierL] -> [PlayerL PartierL|PartierL]
+
+(can't push a Partier into another Person)
+Up [> PlayerU PartierU| ObstacleU] -> [PlayerU PartierU| ObstacleU]
+Right [> PlayerR PartierR| ObstacleR] -> [PlayerR PartierR|ObstacleR]
+Down [> PlayerD PartierD| ObstacleD] -> [PlayerD PartierD|ObstacleD]
+Left [> PlayerL PartierL| ObstacleL] -> [PlayerL PartierL|ObstacleL]
 
 (can't move backward into another Person)
 Down [> PlayerU | PersonU] -> [PlayerU| PersonU]
@@ -243,8 +302,25 @@ Right [> PlayerL | PersonL] -> [PlayerL| PersonL]
 [> PlayerD| PersonD] -> [|PlayerD PersonD]
 [> PlayerL| PersonL] -> [|PlayerL PersonL]
 
-(otherwise, can't move into the same square)
 [> Player| Person] -> [Player| Person]
+
+(moving into furniture)
+Up [FurnitureU| < PlayerU] -> [FurnitureU| PlayerU]
+Down [FurnitureD| < PlayerD] -> [FurnitureD| PlayerD]
+Left [FurnitureL| < PlayerL] -> [FurnitureL| PlayerL]
+Right [FurnitureR| < PlayerR] -> [FurnitureR| PlayerR]
+
+[> PlayerUR| FurnitureUR] -> [|PlayerUR FurnitureUR]
+[> PlayerUL| FurnitureUL] -> [|PlayerUL FurnitureUL]
+[> PlayerDR| FurnitureDR] -> [|PlayerDR FurnitureDR]
+[> PlayerDL| FurnitureDL] -> [|PlayerDL FurnitureDL]
+
+[Up PlayerU FurnitureU] -> [PlayerU FurnitureU]
+[Right PlayerR FurnitureR] -> [PlayerR FurnitureR]
+[Down PlayerD FurnitureD] -> [PlayerD FurnitureD]
+[Left PlayerL FurnitureL] -> [PlayerL FurnitureL]
+
+[> Player| Furniture] -> [Player | Furniture]
 
 (a bit caustic, but once we've said goodbye to the hosts, they're just as in the way as everyone else)
 late [PlayerU HostU] -> [PlayerU PartierU]
@@ -269,6 +345,34 @@ No Host
 =======
 LEVELS
 =======
+
+(
+(===========
+ Test Levels
+ ===========)
+(Furni Test1)
+#######
+#.....#
+#.-.9.#
+#.....#
+#.+.0.#
+#p....e
+#######
+
+(Furni Test2)
+###################
+#l.....d.........u#
+#..d..r+l..l...r..#
+#.r-l..u..u9u.u0u.#
+#..u.......l...r..#
+#..d...d...r...l..#
+#pr0l.r9l.d+d.d-d.e
+#..u...u...r...l..#
+#d...............r#
+###################
+)
+
+
 message Everyone's gone to the party. I better go too.
 (Intro 1)
 ##########
@@ -340,3 +444,14 @@ message I'd better say goodbye to the host before I leave.
 #.l..u#
 #d7d###
 #####..
+
+(Host2)
+#######e#
+#7.r.l..#
+#.d....d#
+#uuddrlu#
+#lr...l.#
+#.r...l.#
+#p.uuur8#
+#########
+

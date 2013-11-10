@@ -1,4 +1,4 @@
-title Party Leaver 0.02
+title Party Leaver 0.03
 background_color Black
 debug
 run_rules_on_level_start
@@ -455,3 +455,16 @@ message I'd better say goodbye to the host before I leave.
 #p.uuur8#
 #########
 
+message Congratulations! You're one heck of a party leaver.
+message That's it for now. :)
+
+####################e#
+#......09............#
+#.r..................#
+#.+-......+..........#
+#.09......0..........#
+#....................#
+#.....p..............#
+#....................#
+#....................#
+######################

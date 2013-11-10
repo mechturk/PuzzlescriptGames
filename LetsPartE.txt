@@ -1,6 +1,5 @@
 title Let's Part, E
-verbose_logging
-
+again_interval 0.05
 ========
 OBJECTS
 ========
@@ -271,9 +270,9 @@ RULES
 (Horizontal Match)
 [match] -> []
 [matching] -> []
+[moving player][wordpointer] -> [moving player][]
 
-Right [Moving Player][Border|...|Letter] -> [Moving Player][WordPointer Border|...|Letter]
-Down [Wordpointer|...|WordPointer] -> [WordPointer|...|]
+Right [Moving Player][Border|Wall] -> [Moving Player][WordPointer Border|Wall]
 
 Right [WordPointer|...|E] -> [WordPointer|...|< Matching E]
 Right [Matching E][Player] -> [Matching E][< Match Player]
@@ -284,6 +283,8 @@ Left [> Matching|] -> [|Matching]
 Left [> Match|] -> [|Match]
 Left [Match H][Matching H] -> [> Match H][> Matching H]
 Left [Match S][Matching S] -> [> Match S][> Matching S]
+Left [Match T][Matching T] -> [> Match T][> Matching T]
+Left [Match Y][Matching Y] -> [> Match Y][> Matching Y]
 endloop
 Left [> Matching|] -> [|Matching]
 Left [> Match|] -> [|Match]
@@ -295,6 +296,7 @@ Right [Matching E][stationary Match][Player] -> [Matching E][][> Match Player]
 startloop
 Right [> Matching|] -> [|Matching]
 Right [> Match|] -> [|Match]
+Right [Match R][Matching R] -> [> Match R][> Matching R]
 Right [Match Y][Matching Y] -> [> Match Y][> Matching Y]
 endloop
 
@@ -315,10 +317,9 @@ right [Matching Border][Border|...|Letter] -> [Matching Border][Border|...|Up Le
 right [matching border][match] -> [border][]
 endloop
 
-[WordPointer] -> [Down Wordpointer] again
+late random down [WordPointer|] -> [|Wordpointer] again
 
-
-
+[> Player|Letter] -> [> Player|> Letter]
 
 ==============
 WINCONDITIONS
@@ -328,9 +329,36 @@ No Letter
 =======
 LEVELS
 =======
-.H*|HE|
-..@|..|
 
-...H.Y|SHE|
-....@.|HE.|
-.ARSH.|...|
+Message E was sad.
+
+@....*
+
+Message E didn't understand.
+
+###|###
+#H*|HE#
+#.@|..#
+#######
+
+Message Why did they say it?
+
+####|####
+#S.*|SHE#
+#H.#|...#
+#..@|...#
+#########
+
+Message "Let's Part, E."
+####|####
+#H.*|HER#
+#.R.|...#
+#..@|...#
+#########
+
+
+#######|#####
+#..TH.A|THE.#
+#TH.Y@.|HEY.#
+#...SH.|SHE.#
+#############

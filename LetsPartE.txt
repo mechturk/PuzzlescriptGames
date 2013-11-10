@@ -1,0 +1,336 @@
+title Let's Part, E
+verbose_logging
+
+========
+OBJECTS
+========
+Background
+Green
+
+Wall
+Black
+
+Border
+Black
+
+A
+white
+00000
+0...0
+00000
+0...0
+0...0
+
+B
+white
+0000.
+0...0
+0000.
+0...0
+0000.
+
+C
+white
+00000
+0....
+0....
+0....
+00000
+
+D
+white
+0000.
+0...0
+0...0
+0...0
+0000.
+
+E
+white
+00000
+0....
+00000
+0....
+00000
+
+F
+white
+00000
+0....
+00000
+0....
+0....
+
+G
+white
+.0000
+0....
+0..00
+0...0
+.0000
+
+H
+white
+0...0
+0...0
+00000
+0...0
+0...0
+
+I
+white
+00000
+..0..
+..0..
+..0..
+00000
+
+J
+white
+00000
+..0..
+..0..
+..0..
+000..
+
+K
+white
+0...0
+0.00.
+00...
+0.00.
+0...0
+
+L
+white
+0....
+0....
+0....
+0....
+00000
+
+M
+white
+00000
+0.0.0
+0.0.0
+0.0.0
+0.0.0
+
+N
+white
+0...0
+00..0
+0.0.0
+0..00
+0...0
+
+O
+white
+00000
+0...0
+0...0
+0...0
+00000
+
+P
+white
+00000
+0...0
+00000
+0....
+0....
+
+R
+white
+0000.
+0...0
+0000.
+0...0
+0...0
+
+S
+white
+.0000
+0....
+.000.
+....0
+0000.
+
+T
+white
+00000
+..0..
+..0..
+..0..
+..0..
+
+U
+white
+0...0
+0...0
+0...0
+0...0
+00000
+
+Vee
+white
+0...0
+.0.0.
+.0.0.
+..0..
+..0..
+
+W
+white
+0.0.0
+0.0.0
+0.0.0
+0.0.0
+.0.0.
+
+X
+white
+0...0
+.0.0.
+..0..
+.0.0.
+0...0
+
+Y
+white
+0...0
+0...0
+00000
+..0..
+..0..
+
+Player
+Red
+00000
+0....
+00000
+0....
+00000
+
+Exit
+Grey
+
+Match
+Blue
+00...
+.....
+.....
+.....
+.....
+
+Matching
+Blue
+0....
+.....
+.....
+.....
+.....
+
+
+WordPointer
+White
+..0..
+...0.
+....0
+...0.
+..0..
+
+=======
+LEGEND
+=======
+Letter = A or B or C or D or E or F or G or H or I or J or K or L or M or N or O or P or R or S or T or U or Vee or W or X or Y
+
+. = Background
+# = Wall
+@ = Player
+| = Border
+* = Exit
+- = WordPointer and Border
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+Background
+Exit
+Player, Letter, Wall, Border
+Match, Matching
+WordPointer
+
+======
+RULES
+======
+(Horizontal Match)
+[match] -> []
+[matching] -> []
+
+Right [Moving Player][Border|...|Letter] -> [Moving Player][WordPointer Border|...|Letter]
+Down [Wordpointer|...|WordPointer] -> [WordPointer|...|]
+
+Right [WordPointer|...|E] -> [WordPointer|...|< Matching E]
+Right [Matching E][Player] -> [Matching E][< Match Player]
+
+
+startloop
+Left [> Matching|] -> [|Matching]
+Left [> Match|] -> [|Match]
+Left [Match H][Matching H] -> [> Match H][> Matching H]
+Left [Match S][Matching S] -> [> Match S][> Matching S]
+endloop
+Left [> Matching|] -> [|Matching]
+Left [> Match|] -> [|Match]
+
+Right [Matching Border|...|E] -> [Border|...|> Matching E]
+Right [Matching E][stationary Match][Player] -> [Matching E][][> Match Player]
+[stationary Matching][stationary match] -> [][]
+
+startloop
+Right [> Matching|] -> [|Matching]
+Right [> Match|] -> [|Match]
+Right [Match Y][Matching Y] -> [> Match Y][> Matching Y]
+endloop
+
+(no match)
+[Matching Letter] -> [Letter]
+right [|stationary matching] -> [< Matching|]
+right [|stationary match] -> [< Match|]
+(match)
+
+startloop
+right [|< Match Player][|< Matching Letter] -> [Match|Player][ Matching|]
+right [|< Match Letter] -> [Match|]
+right [|< Matching Letter] -> [Matching|]
+
+right [matching] -> [< matching]
+right [match] -> [< match]
+right [Matching Border][Border|...|Letter] -> [Matching Border][Border|...|Up Letter]
+right [matching border][match] -> [border][]
+endloop
+
+[WordPointer] -> [Down Wordpointer] again
+
+
+
+
+==============
+WINCONDITIONS
+==============
+All Player on Exit
+No Letter
+=======
+LEVELS
+=======
+.H*|HE|
+..@|..|
+
+...H.Y|SHE|
+....@.|HE.|
+.ARSH.|...|

@@ -1,0 +1,258 @@
+Title Sprite Editor
+Author Dennis Au
+
+color_palette arnecolors
+
+(
+mastersystem
+gameboycolour
+amiga
+arnecolors
+famicom
+atari
+pastel
+ega
+amstrad
+proteus_mellow
+proteus_rich
+proteus_night
+c64
+whitingjp
+)
+
+========
+OBJECTS
+========
+
+Clear L
+Black White
+01111
+01000
+01000
+01000
+01111
+
+Save @
+Black White
+01111
+01000
+01111
+00001
+01111
+
+LuckyDip S
+Black White
+01111
+01001
+01111
+01010
+01001
+
+Eraser R
+Black White
+01111
+01000
+01111
+01000
+01111
+
+Player P
+Black Green
+..0..
+.....
+0.1.0
+.....
+..0..
+
+Selected
+DarkGreen LightGreen
+0...1
+.....
+.....
+.....
+1...0
+
+Border -
+Black
+
+Background
+white lightgrey
+00000
+00000
+00100
+00000
+00000
+
+White
+white
+
+LGrey
+lightgrey
+
+Grey
+grey
+
+DGrey
+DarkGrey
+
+Black
+black
+
+LRed
+lightred
+
+Red
+red
+
+DRed
+darkred
+
+LBrown
+lightbrown
+
+Brown
+brown
+
+DarkBrown
+darkbrown
+
+Orange
+orange
+
+Yellow
+yellow
+
+LGreen
+lightgreen
+
+Green
+green
+
+DGreen
+darkgreen
+
+LBlue
+lightblue
+
+Blue
+blue
+
+Dblue
+darkblue
+
+Purple
+purple
+
+Pink
+pink
+
+=======
+LEGEND
+=======
+
+. = Background
+0 = White
+1 = LGrey
+2 = Grey
+3 = DGrey
+4 = Black
+5 = LRed
+6 = Red
+7 = DRed
+8 = LBrown
+9 = Brown
+a = DarkBrown
+b = Orange
+c = Yellow
+d = LGreen
+e = Green
+f = DGreen
+g = LBlue
+h = Blue
+i = Dblue
+j = Purple
+k = Pink
+
+Colour = White or LGrey or Grey or DGrey or Black or LRed or Red or DRed or LBrown or Brown or DarkBrown or Orange or Yellow or LGreen or Green or DGreen or LBlue or Blue or Dblue or Purple or Pink
+Tool = Colour or Eraser 
+=======
+SOUNDS
+=======
+sfx0 45309700
+
+================
+COLLISIONLAYERS
+================
+Background
+Colour, Eraser, Clear, LuckyDip, Save
+Player, Border
+Selected
+
+======
+RULES
+======
+Vertical [> Player|Border|] -> [|Border|Player]
+Horizontal [> Player|Border] -> Cancel
+
+(clear)
+Up [Action Player Clear][Border|...|Colour] -> [Action Player Clear][Border|...|]
+
+(random)
+Up [Action Player LuckyDip][Border|...|No Selected] -> [Action Player LuckyDip][Border|...|Random Colour Selected]
+Late Up [Border|...|Selected] -> [Border|...|]
+
+(save)
+[Action Player Save] -> checkpoint sfx0
+
+(selection behaviour)
+Down [Border|...| Action Player Tool][Selected] -> [Border|... | Player Selected Tool][]
+Down [Border|... | Action Player Tool] -> [Border|... | Player Selected Tool]
+
+
+(drawing behaviour)
+Up [Border|...| Action Player 0][Selected 0] -> [Border|...| Player][Selected 0]
+Up [Border|...| Action Player 1][Selected 1] -> [Border|...| Player][Selected 1]
+Up [Border|...| Action Player 2][Selected 2] -> [Border|...| Player][Selected 2]
+Up [Border|...| Action Player 3][Selected 3] -> [Border|...| Player][Selected 3]
+Up [Border|...| Action Player 4][Selected 4] -> [Border|...| Player][Selected 4]
+Up [Border|...| Action Player 5][Selected 5] -> [Border|...| Player][Selected 5]
+Up [Border|...| Action Player 6][Selected 6] -> [Border|...| Player][Selected 6]
+Up [Border|...| Action Player 7][Selected 7] -> [Border|...| Player][Selected 7]
+Up [Border|...| Action Player 8][Selected 8] -> [Border|...| Player][Selected 8]
+Up [Border|...| Action Player 9][Selected 9] -> [Border|...| Player][Selected 9]
+Up [Border|...| Action Player a][Selected a] -> [Border|...| Player][Selected a]
+Up [Border|...| Action Player b][Selected b] -> [Border|...| Player][Selected b]
+Up [Border|...| Action Player c][Selected c] -> [Border|...| Player][Selected c]
+Up [Border|...| Action Player d][Selected d] -> [Border|...| Player][Selected d]
+Up [Border|...| Action Player e][Selected e] -> [Border|...| Player][Selected e]
+Up [Border|...| Action Player f][Selected f] -> [Border|...| Player][Selected f]
+Up [Border|...| Action Player g][Selected g] -> [Border|...| Player][Selected g]
+Up [Border|...| Action Player h][Selected h] -> [Border|...| Player][Selected h]
+Up [Border|...| Action Player i][Selected i] -> [Border|...| Player][Selected i]
+Up [Border|...| Action Player j][Selected j] -> [Border|...| Player][Selected j]
+Up [Border|...| Action Player k][Selected k] -> [Border|...| Player][Selected k]
+
+Up [Border|...| Action Player][Selected Colour] -> [Border|...| Player Colour][Selected Colour]
+Up [Border|...| Action Player Colour][Selected Eraser] -> [Border|...| Player][Selected Eraser]
+
+
+
+==============
+WINCONDITIONS
+==============
+
+=======
+LEVELS
+=======
+
+.....
+.....
+.....
+.....
+P....
+-----
+01234
+567RL
+89abc
+defs@
+ghijk

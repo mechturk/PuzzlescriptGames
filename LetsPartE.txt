@@ -21,101 +21,102 @@ Black Black
 11011
 
 A
-White
-00000
-0...0
-00000
-0...0
-0...0
+White LightGrey
+.00..
+0..0.
+0000.
+0..0.
+1..1.
 
 B
-white
-0000.
-0...0
-0000.
-0...0
-0000.
+white LightGrey
+000..
+0..0.
+000..
+0..0.
+111..
 
 C
-white
-00000
+white LightGrey
+.000.
 0....
 0....
 0....
-00000
+.111.
 
 D
-white
-0000.
-0...0
-0...0
-0...0
-0000.
+white LightGrey
+000..
+0..0.
+0..0.
+0..0.
+111..
 
 E
-white
-00000
+white LightGrey
+0000.
 0....
-00000
+0000.
 0....
-00000
+1111.
 
 F
-white
-00000
+white LightGrey
+0000.
 0....
-00000
+0000.
 0....
-0....
+1....
 
 G
-white
-.0000
+white LightGrey
+.000.
 0....
-0..00
-0...0
-.0000
+0.00.
+0..0.
+.111.
 
 H
-white
-0...0
-0...0
-00000
-0...0
-0...0
+white LightGrey
+0..0.
+0..0.
+0000.
+0..0.
+1..1.
 
 I
-white
-00000
+white LightGrey
+.000.
 ..0..
 ..0..
 ..0..
-00000
+.111.
 
 J
-white
-00000
+white LightGrey
+0000.
 ..0..
 ..0..
 ..0..
-000..
+111..
 
 K
-white
-0...0
-0.00.
+white LightGrey
+0..0.
+0.0..
 00...
-0.00.
-0...0
+0.0..
+1..1.
 
 L
-white
+white LightGrey
 0....
 0....
 0....
 0....
-00000
+1111.
 
+(
 M
 white
 00000
@@ -123,71 +124,73 @@ white
 0.0.0
 0.0.0
 0.0.0
+)
 
 N
-white
-0...0
-00..0
-0.0.0
-0..00
-0...0
+white LightGrey
+0..0.
+00.0.
+0000.
+0.00.
+1..1.
 
 O
-white
-00000
-0...0
-0...0
-0...0
-00000
+white LightGrey
+0000.
+0..0.
+0..0.
+0..0.
+1111.
 
 P
-white
-00000
-0...0
-00000
+white LightGrey
+0000.
+0..0.
+0000.
 0....
-0....
+1....
 
 R
-white
-0000.
-0...0
-0000.
-0...0
-0...0
+white LightGrey
+000..
+0..0.
+000..
+0..0.
+1..1.
 
 S
-white
-.0000
-0....
+white LightGrey
 .000.
-....0
-0000.
+0....
+.00..
+...0.
+111..
 
 T
-white
+white LightGrey
 00000
 ..0..
 ..0..
 ..0..
-..0..
+..1..
 
 U
-white
-0...0
-0...0
-0...0
-0...0
-.000.
+white LightGrey
+0..0.
+0..0.
+0..0.
+0..0.
+1111.
 
-Vee
-white
-0...0
-.0.0.
-.0.0.
-..0..
-..0..
+Vee -
+white LightGrey
+0..0.
+0..0.
+0..0.
+.00..
+.11..
 
+(
 W
 white
 0.0.0
@@ -195,30 +198,31 @@ white
 0.0.0
 0.0.0
 .0.0.
+)
 
 X
-white
-0...0
-.0.0.
-..0..
-.0.0.
-0...0
+white LightGrey
+0..0.
+0..0.
+.00..
+0..0.
+1..1.
 
 Y
-white
-0...0
-0...0
-00000
-..0..
-..0..
+white LightGrey
+0..0.
+0..0.
+0000.
+...0.
+1111.
 
 Player
 Red
-00000
+0000.
 0....
-00000
+0000.
 0....
-00000
+0000.
 
 Match
 Blue
@@ -253,12 +257,13 @@ White
 =======
 LEGEND
 =======
-Letter = A or B or C or D or E or F or G or H or I or J or K or L or M or N or O or P or R or S or T or U or Vee or W or X or Y
+Letter = A or B or C or D or E or F or G or H or I or J or K or L or N or O or P or R or S or T or U or Vee or X or Y (or M or W or Q or Z)
 
 . = Background
 # = Wall
 @ = Player
 | = Border
+(- = Vee)
 (- = WordPointer and Border)
 =======
 SOUNDS
@@ -308,7 +313,7 @@ Left [Match I][Matching I] -> [> Match I][> Matching I]
 Left [Match J][Matching J] -> [> Match J][> Matching J]
 Left [Match K][Matching K] -> [> Match K][> Matching K]
 Left [Match L][Matching L] -> [> Match L][> Matching L]
-Left [Match M][Matching M] -> [> Match M][> Matching M]
+(Left [Match M][Matching M] -> [> Match M][> Matching M])
 Left [Match N][Matching N] -> [> Match N][> Matching N]
 Left [Match O][Matching O] -> [> Match O][> Matching O]
 Left [Match P][Matching P] -> [> Match P][> Matching P]
@@ -317,7 +322,7 @@ Left [Match S][Matching S] -> [> Match S][> Matching S]
 Left [Match T][Matching T] -> [> Match T][> Matching T]
 Left [Match U][Matching U] -> [> Match U][> Matching U]
 Left [Match Vee][Matching Vee] -> [> Match Vee][> Matching Vee]
-Left [Match W][Matching W] -> [> Match W][> Matching W]
+(Left [Match W][Matching W] -> [> Match W][> Matching W])
 Left [Match X][Matching X] -> [> Match X][> Matching X]
 Left [Match Y][Matching Y] -> [> Match Y][> Matching Y]
 endloop
@@ -345,7 +350,7 @@ Right [Match I][Matching I] -> [> Match I][> Matching I]
 Right [Match J][Matching J] -> [> Match J][> Matching J]
 Right [Match K][Matching K] -> [> Match K][> Matching K]
 Right [Match L][Matching L] -> [> Match L][> Matching L]
-Right [Match M][Matching M] -> [> Match M][> Matching M]
+(Right [Match M][Matching M] -> [> Match M][> Matching M])
 Right [Match N][Matching N] -> [> Match N][> Matching N]
 Right [Match O][Matching O] -> [> Match O][> Matching O]
 Right [Match P][Matching P] -> [> Match P][> Matching P]
@@ -354,7 +359,7 @@ Right [Match S][Matching S] -> [> Match S][> Matching S]
 Right [Match T][Matching T] -> [> Match T][> Matching T]
 Right [Match U][Matching U] -> [> Match U][> Matching U]
 Right [Match Vee][Matching Vee] -> [> Match Vee][> Matching Vee]
-Right [Match W][Matching W] -> [> Match W][> Matching W]
+(Right [Match W][Matching W] -> [> Match W][> Matching W])
 Right [Match X][Matching X] -> [> Match X][> Matching X]
 Right [Match Y][Matching Y] -> [> Match Y][> Matching Y]
 endloop
@@ -410,7 +415,7 @@ Left [Match I][Matching I] -> [v Match I][> Matching I]
 Left [Match J][Matching J] -> [v Match J][> Matching J]
 Left [Match K][Matching K] -> [v Match K][> Matching K]
 Left [Match L][Matching L] -> [v Match L][> Matching L]
-Left [Match M][Matching M] -> [v Match M][> Matching M]
+(Left [Match M][Matching M] -> [v Match M][> Matching M])
 Left [Match N][Matching N] -> [v Match N][> Matching N]
 Left [Match O][Matching O] -> [v Match O][> Matching O]
 Left [Match P][Matching P] -> [v Match P][> Matching P]
@@ -419,7 +424,7 @@ Left [Match S][Matching S] -> [v Match S][> Matching S]
 Left [Match T][Matching T] -> [v Match T][> Matching T]
 Left [Match U][Matching U] -> [v Match U][> Matching U]
 Left [Match Vee][Matching Vee] -> [v Match Vee][> Matching Vee]
-Left [Match W][Matching W] -> [v Match W][> Matching W]
+(Left [Match W][Matching W] -> [v Match W][> Matching W])
 Left [Match X][Matching X] -> [v Match X][> Matching X]
 Left [Match Y][Matching Y] -> [v Match Y][> Matching Y]
 endloop
@@ -447,7 +452,7 @@ Right [Match I][Matching I] -> [v Match I][> Matching I]
 Right [Match J][Matching J] -> [v Match J][> Matching J]
 Right [Match K][Matching K] -> [v Match K][> Matching K]
 Right [Match L][Matching L] -> [v Match L][> Matching L]
-Right [Match M][Matching M] -> [v Match M][> Matching M]
+(Right [Match M][Matching M] -> [v Match M][> Matching M])
 Right [Match N][Matching N] -> [v Match N][> Matching N]
 Right [Match O][Matching O] -> [v Match O][> Matching O]
 Right [Match P][Matching P] -> [v Match P][> Matching P]
@@ -456,7 +461,7 @@ Right [Match S][Matching S] -> [v Match S][> Matching S]
 Right [Match T][Matching T] -> [v Match T][> Matching T]
 Right [Match U][Matching U] -> [v Match U][> Matching U]
 Right [Match Vee][Matching Vee] -> [v Match Vee][> Matching Vee]
-Right [Match W][Matching W] -> [v Match W][> Matching W]
+(Right [Match W][Matching W] -> [v Match W][> Matching W])
 Right [Match X][Matching X] -> [v Match X][> Matching X]
 Right [Match Y][Matching Y] -> [v Match Y][> Matching Y]
 endloop
@@ -512,8 +517,8 @@ LEVELS
 Message E was sad.
 
 ###|###
-#.@|ME#
-#M.|x..#
+#.@|BE#
+#B.|..#
 #######
 
 

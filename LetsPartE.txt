@@ -1,6 +1,6 @@
-title Let's Part, E.
+title Let's Part, E. v0.01
 again_interval 0.01
-(background_color grey)
+background_color black
 
 ========
 OBJECTS
@@ -12,7 +12,7 @@ Wall
 Black
 
 Border
-White Black
+Black Black
 11011
 11111
 11111
@@ -386,9 +386,11 @@ right [match] -> [< match]
 right [< matching border][match] -> [stationary matching border][]
 endloop
 
+(slide words up if we've eliminated one)
 right [Matching Border][WordPointer|...|] -> [Matching Border][WordPointer|...|Match]
 down [Match|...|Letter] -> [Match|...|Up Letter]
 
+(cleanup)
 [matching] -> []
 [match][wordpointer|] -> [][|wordpointer]
 [match] -> []
@@ -486,15 +488,18 @@ down [match] -> [< match]
 right [< matching border][match] -> [stationary matching border][]
 endloop
 
+(slide words up if we've eliminated one)
 right [Matching Border][WordPointer|...|] -> [Matching Border][WordPointer|...|Match]
 down [Match|...|Letter] -> [Match|...|Up Letter]
 
+(cleanup)
 [matching] -> []
 [match][wordpointer|] -> [][|wordpointer]
 [match] -> []
 
-
+(cycle through the word list)
 late random down [WordPointer|] -> [|Wordpointer] again
+
 
 [> Player|Letter] -> [> Player|> Letter]
 
@@ -538,6 +543,7 @@ Message Why did they say it?
 #########
 
 Message "Let's Part, E."
+
 ########|######
 #.....l.|later#
 #part*@.|pest.#
@@ -546,6 +552,7 @@ Message "Let's Part, E."
 ###############
 
 Message "Let's Part, E."
+
 #####|######
 #....|tears#
 #.p.*|lept.#
@@ -555,3 +562,14 @@ Message "Let's Part, E."
 #l@ts|.....#
 #...#|.....#
 ############
+
+Message ...
+
+########|####
+#..##..@|the#
+#h..*.t.|end#
+#.n.#..d|...#
+#...####|...#
+#############
+
+Message That's it for now. Stay tuned.

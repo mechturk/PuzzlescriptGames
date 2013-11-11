@@ -1,4 +1,5 @@
-title Let's Part, E. v0.01
+title Let's Part, E. 0.01
+author Dennis Au
 again_interval 0.01
 background_color black
 
@@ -219,15 +220,6 @@ Red
 0....
 00000
 
-Exit
-LightGrey
-.....
-.....
-.....
-...0.
-..00.
-
-
 Match
 Blue
 00...
@@ -267,7 +259,6 @@ Letter = A or B or C or D or E or F or G or H or I or J or K or L or M or N or O
 # = Wall
 @ = Player
 | = Border
-* = Exit
 (- = WordPointer and Border)
 =======
 SOUNDS
@@ -277,7 +268,6 @@ SOUNDS
 COLLISIONLAYERS
 ================
 Background
-Exit
 Player, Letter, Wall, Border
 Match, Matching
 WordPointer
@@ -506,8 +496,8 @@ late random down [WordPointer|] -> [|Wordpointer] again
 ==============
 WINCONDITIONS
 ==============
-All Player on Exit
 No Letter
+
 =======
 LEVELS
 =======
@@ -521,16 +511,18 @@ LEVELS
 
 Message E was sad.
 
-########
-#@....*#
-########
+###|###
+#.@|ME#
+#M.|x..#
+#######
+
 
 Message E didn't understand.
 
 ###|###
 #@#|EH#
 #.H|..#
-##*|..#
+##.|..#
 #######
 
 Message Why did they say it?
@@ -539,23 +531,23 @@ Message Why did they say it?
 #...|HEY#
 #Y..|...#
 #.H@|...#
-#*..|...#
+#...|...#
 #########
 
 Message "Let's Part, E."
 
 ########|######
 #.....l.|later#
-#part*@.|pest.#
+#part.@.|pest.#
 #.....t.|.....#
 #.....s.|.....#
 ###############
 
-Message "Let's Part, E."
+Message Why?
 
 #####|######
 #....|tears#
-#.p.*|lept.#
+#.p..|lept.#
 #.a..|.....#
 #.r..|.....#
 ##t..|.....#
@@ -567,7 +559,7 @@ Message ...
 
 ########|####
 #..##..@|the#
-#h..*.t.|end#
+#h....t.|end#
 #.n.#..d|...#
 #...####|...#
 #############

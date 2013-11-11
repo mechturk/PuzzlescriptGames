@@ -217,7 +217,7 @@ white LightGrey
 1111.
 
 Player
-Red
+Red DarkRed
 0000.
 0....
 0000.
@@ -517,18 +517,18 @@ LEVELS
 Message E was sad.
 
 ###|###
-#.@|BE#
-#B.|..#
-#######
-
-
-Message E didn't understand.
-
-###|###
 #@#|EH#
 #.H|..#
 ##.|..#
 #######
+
+Message She didn't understand.
+
+####|####
+#S@.|SHE#
+#.H.|...#
+##..|...#
+#########
 
 Message Why did they say it?
 

@@ -1,0 +1,134 @@
+title Random Shortest Path using 1 object
+author Dennis Au
+background_color Green
+realtime_interval 0.2
+
+========
+OBJECTS
+========
+Background .
+White
+
+Wall X
+Grey
+
+Player @
+Black
+.....
+.000.
+.000.
+.000.
+.....
+
+Fill
+Black
+.....
+.....
+.....
+.....
+.....
+
+EnemyR
+Red
+00000
+0...0
+0...0
+0...0
+00000
+
+EnemyG
+Green
+.....
+.000.
+.0.0.
+.000.
+.....
+
+EnemyB
+Blue
+.....
+.....
+..0..
+.....
+.....
+
+=======
+LEGEND
+=======
+E = EnemyG and EnemyB and EnemyR
+Enemy = EnemyG or EnemyB or EnemyR
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+Background
+Fill
+Player, Wall, EnemyG
+EnemyB
+EnemyR
+
+======
+RULES
+======
+
+(use floodfill to mark distance to player alternating 0,1,2...
+algorithm is:
+
+1. Mark Player as 0
+2. Mark unfilled squares next to 0 as 1
+3. Mark unfilled squares next to 1 as 2
+4. Mark unfilled squares next to 2 as 0
+5. Loop 2-4.
+
+Then, enemies can find the player by reducing their distance by one:
+1. If enemy is on 2, mark to move to 1
+2. If enemy is on 1, mark to move to 0
+3. If enemy is on 0, mark to move to 2
+
+Reduce to one object by encoding as follows:
+0 -> Up Fill
+1 -> Right Fill
+2 -> Down Fill
+(clockwise with 12o'clock as 0)
+)
+
+[Player] -> [Player Up Fill]
+
+[Up Fill| No Fill No Wall] -> [Up Fill|Right Fill]
++[Right Fill| No Fill No Wall] -> [Right Fill|Down Fill]
++[Down Fill| No Fill No Wall] -> [Down Fill|Up Fill]
+
+startloop
+random [stationary enemy Down Fill|Right Fill] -> [> enemy Down Fill|Right Fill]
+random [stationary enemy Right Fill|Up Fill] -> [> enemy Right Fill|Up Fill]
+random [stationary enemy Up Fill|Down Fill] -> [> enemy Up Fill|Down Fill]
+endloop
+
+[Fill] -> []
+[> Enemy|Player] -> restart
+
+==============
+WINCONDITIONS
+==============
+
+=======
+LEVELS
+=======
+
+.xxx.....e
+.x...x....
+.x.xxxxxx.
+.x.x...@x.
+xx.x....x.
+...x....x.
+.xxx....x.
+........x.
+x..xxxxxx.
+x.........
+x..xx.....
+x.........
+xxxxxxxxxx

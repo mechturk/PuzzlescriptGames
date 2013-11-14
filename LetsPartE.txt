@@ -1,7 +1,7 @@
-title Let's Part, E. 0.01
+title Let's Part, E. 0.02
 author Dennis Au
-again_interval 0.01
-background_color black
+again_interval 0
+(background_color grey)
 
 ========
 OBJECTS
@@ -182,7 +182,7 @@ white LightGrey
 0..0.
 1111.
 
-Vee -
+Vee
 white LightGrey
 0..0.
 0..0.
@@ -263,8 +263,9 @@ Letter = A or B or C or D or E or F or G or H or I or J or K or L or N or O or P
 # = Wall
 @ = Player
 | = Border
-(- = Vee)
+- = Vee
 (- = WordPointer and Border)
+
 =======
 SOUNDS
 =======
@@ -493,7 +494,7 @@ down [Match|...|Letter] -> [Match|...|Up Letter]
 [match] -> []
 
 (cycle through the word list)
-late random down [WordPointer|] -> [|Wordpointer] again
+late random down [WordPointer|Border] -> [|Wordpointer Border] again
 
 
 [> Player|Letter] -> [> Player|> Letter]
@@ -515,28 +516,25 @@ LEVELS
 )
 
 Message E was sad.
-
-###|###
-#@#|EH#
-#.H|..#
-##.|..#
-#######
+####|####
+#r@.|rue#
+#.u.#...#
+##..#...#
+#########
 
 Message She didn't understand.
-
-####|####
-#S@.|SHE#
-#.H.|...#
-##..|...#
-#########
+###|###
+#@.|EH#
+##H#..#
+#######
 
 Message Why did they say it?
 
 ####|####
 #...|HEY#
-#Y..|...#
-#.H@|...#
-#...|...#
+#Y..#...#
+#.H@#...#
+#...#...#
 #########
 
 Message "Let's Part, E."
@@ -544,8 +542,8 @@ Message "Let's Part, E."
 ########|######
 #.....l.|later#
 #part.@.|pest.#
-#.....t.|.....#
-#.....s.|.....#
+#.....t.#.....#
+#.....s.#.....#
 ###############
 
 Message Why?
@@ -553,20 +551,56 @@ Message Why?
 #####|######
 #....|tears#
 #.p..|lept.#
-#.a..|.....#
-#.r..|.....#
-##t..|.....#
-#l@ts|.....#
-#...#|.....#
+#.a..#.....#
+#.r..#.....#
+##t..#.....#
+#l@ts#.....#
+#...##.....#
 ############
 
-Message ...
+Message It's okay she told herself.
+
+#########|#######
+#......##|bra-e.#
+#..ab....|bra-e.#
+#...a.-..|facade#
+##car-@d.#......#
+##....r.##......#
+##..fab.##......#
+##......##......#
+#################
+
+Message I'm okay, she said.
+
+#################|#######
+#####..h.....####|broken#
+#####..i..##.o..#|heart.#
+#####..d...#..k..|aside.#
+#...a.t@ar.#n##..#......#
+#...#..s...r..b..#......#
+###########.....##......#
+#########################
+
+Message Really, I'm okay.
+
+######|#####
+#.....|lies#
+#.il.i|lies#
+#.l..s|lies#
+#.l.ss#....#
+###.###....#
+###...#....#
+###@i.#....#
+###...#....#
+############
+
+Message Congratulations, that's it for now.
+Message Stay tuned for more.
 
 ########|####
 #..##..@|the#
 #h....t.|end#
-#.n.#..d|...#
-#...####|...#
+#.n.#..d#...#
+#...#####...#
 #############
 
-Message That's it for now. Stay tuned.

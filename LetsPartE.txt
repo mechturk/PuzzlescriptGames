@@ -1,7 +1,7 @@
-title Let's Part, E. 0.02
+title "Let's Part, E" 0.02
 author Dennis Au
 again_interval 0
-(background_color grey)
+background_color grey
 
 ========
 OBJECTS
@@ -570,17 +570,6 @@ Message It's okay she told herself.
 ##......##......#
 #################
 
-Message I'm okay, she said.
-
-#################|#######
-#####..h.....####|broken#
-#####..i..##.o..#|heart.#
-#####..d...#..k..|aside.#
-#...a.t@ar.#n##..#......#
-#...#..s...r..b..#......#
-###########.....##......#
-#########################
-
 Message Really, I'm okay.
 
 ######|#####
@@ -594,13 +583,35 @@ Message Really, I'm okay.
 ###...#....#
 ############
 
-Message Congratulations, that's it for now.
-Message Stay tuned for more.
+Message Still, she struggled on.
+
+#################|#######
+#####..h.....####|broken#
+#####..i..##.o..#|heart.#
+#####..d...#..k..|aside.#
+#...a.t@ar.#n##..#......#
+#...#..s...r..b..#......#
+###########.....##......#
+#########################
+
+
+
+Message Till one day, she found hope.
+
+#######|########
+#......|another#
+#......|like...#
+#......|her....#
+################
+................
+
+
 
 ########|####
-#..##..@|the#
+#.@##..@|the#
 #h....t.|end#
 #.n.#..d#...#
 #...#####...#
 #############
 
+Message Thanks for playing! 

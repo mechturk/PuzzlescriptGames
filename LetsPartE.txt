@@ -1,7 +1,7 @@
-title "Let's Part, E" 0.02
+title "Let's Part, E" Contest Ver.
 author Dennis Au
 again_interval 0
-background_color grey
+(background_color grey)
 
 ========
 OBJECTS
@@ -216,13 +216,21 @@ white LightGrey
 ...0.
 1111.
 
-Player
-Red DarkRed
+PlayerE
+Red
 0000.
 0....
 0000.
 0....
 0000.
+
+PlayerM
+Red
+.....
+00000
+0.0.0
+0.0.0
+0.0.0
 
 Match
 Blue
@@ -261,7 +269,9 @@ Letter = A or B or C or D or E or F or G or H or I or J or K or L or N or O or P
 
 . = Background
 # = Wall
-@ = Player
+@ = PlayerE
+! = PlayerM
+Player = PlayerE or PlayerM
 | = Border
 - = Vee
 (- = WordPointer and Border)
@@ -284,11 +294,11 @@ RULES
 
 (Start of turn cleanup)
 
-[moving player][wordpointer] -> [moving player][]
+[moving PlayerE][wordpointer] -> [moving PlayerE][]
 
 (position word pointer to first word)
 
-Right [Moving Player][Border|Wall] -> [Moving Player][WordPointer Border|Wall]
+Right [Moving PlayerE][Border|Wall] -> [Moving PlayerE][WordPointer Border|Wall]
 
 (==========
  Horizontal
@@ -297,7 +307,7 @@ Right [Moving Player][Border|Wall] -> [Moving Player][WordPointer Border|Wall]
 
 (match left of E)
 Right [WordPointer|...|E] -> [WordPointer|...|< Matching E]
-Right [Matching E][Player] -> [Matching E][< Match Player]
+Right [Matching E][PlayerE] -> [Matching E][< Match PlayerE]
 
 startloop
 Left [> Matching|] -> [|Matching]
@@ -331,7 +341,7 @@ endloop
 (if matching matches to the border, LHS to E is a match
 so start to match right of e)
 Right [Matching Border|...|E] -> [Border|...|> Matching E]
-Right [Matching E][stationary Match][Player] -> [Matching E][][> Match Player]
+Right [Matching E][stationary Match][PlayerE] -> [Matching E][][> Match PlayerE]
 (else stop matching)
 [stationary Matching][stationary match] -> [][]
 
@@ -373,7 +383,7 @@ right [|stationary matching] -> [< Matching|]
 right [|stationary match] -> [< Match|]
 
 startloop
-right [|< Match Player][|< Matching Letter] -> [Match|Player][ Matching|]
+right [|< Match PlayerE][|< Matching Letter] -> [Match|PlayerE][ Matching|]
 right [|< Match Letter] -> [Match|]
 right [|< Matching Letter] -> [Matching|]
 
@@ -398,7 +408,7 @@ down [Match|...|Letter] -> [Match|...|Up Letter]
 
 (match above E)
 Right [WordPointer|...|E] -> [WordPointer|...|< Matching E]
-Up [Matching E][Player] -> [Matching E][> Match Player]
+Up [Matching E][PlayerE] -> [Matching E][> Match PlayerE]
 
 startloop
 Left [> Matching|] -> [|Matching]
@@ -433,7 +443,7 @@ endloop
 (if matching matches to the border, Above E is a match
 so start to match below E)
 Right [Matching Border|...|E] -> [Border|...|> Matching E]
-Right [Matching E][stationary Match][Player] -> [Matching E][][v Match Player]
+Right [Matching E][stationary Match][PlayerE] -> [Matching E][][v Match PlayerE]
 (else stop matching)
 [stationary Matching][stationary match] -> [][]
 
@@ -475,7 +485,7 @@ right [|stationary matching] -> [< Matching|]
 down [|stationary match] -> [< Match|]
 
 startloop
-down [|< Match Player][Matching Letter] -> [stationary Match|Player][Matching Letter]
+down [|< Match PlayerE][Matching Letter] -> [stationary Match|PlayerE][Matching Letter]
 down [|< Match Letter] -> [Match|]
 right [|< Matching Letter] -> [Matching|]
 
@@ -594,24 +604,23 @@ Message Still, she struggled on.
 ###########.....##......#
 #########################
 
-
-
 Message Till one day, she found hope.
 
-#######|########
-#......|another#
-#......|like...#
-#......|her....#
-################
-................
+########|########
+#...t...|another#
+#an.h...|like...#
+#ho!@...|her....#
+#.r.ilk.#.......#
+#...r...#.......#
+#################
 
-
+Message Well close enough, anyways.
 
 ########|####
-#.@##..@|the#
+#.!##..@|the#
 #h....t.|end#
 #.n.#..d#...#
 #...#####...#
 #############
 
-Message Thanks for playing! 
+Message Thanks for playing. I hope you had fun!

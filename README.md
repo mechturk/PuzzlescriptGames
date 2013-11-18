@@ -25,6 +25,14 @@ A rudimentary space themed time-trialing game.
 
 Play it at www.puzzlescript.net/play.html?p=7062958
 
+"Let's Part E"
+--------------
+A word puzzle/sokoban crossover created for GameJolt Contest 10.
+
+Party Leaver
+------------
+A game about maneuvering your way out of a party. Created for GameJolt Contest 10.
+
 Scriptcross
 -----------
 Picross implemented in puzzlescript.

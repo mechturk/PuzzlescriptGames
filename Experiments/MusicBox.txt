@@ -1,0 +1,213 @@
+Title MusicBox
+Background_Color Black
+run_rules_on_level_start
+again_interval 0.25
+flickscreen 20x8
+
+========
+OBJECTS
+========
+
+Note
+Black
+.....
+.000.
+.000.
+.000.
+.....
+
+Blank
+White
+
+BarLine
+Grey White
+01111
+01111
+01111
+01111
+01111
+
+PlayerC
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerD
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerE
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerF
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerG
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerA
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerB
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+PlayerC1
+Orange
+..0..
+..0..
+..0..
+..0..
+..0..
+
+End
+Grey
+...00
+...00
+...00
+...00
+...00
+
+=======
+LEGEND
+=======
+
+Background = Blank or BarLine or End
+Player = PlayerC or PlayerD or PlayerE or PlayerF or PlayerG or PlayerA or PlayerB or PlayerC1
+
+| = End
+o = Note and Blank
+. = Blank
+C = PlayerC and BarLine
+D = PlayerD and BarLine
+E = PlayerE and BarLine
+F = PlayerF and BarLine
+G = PlayerG and BarLine
+A = PlayerA and BarLine
+B = PlayerB and BarLine
+H = PlayerC1 and BarLine
+
+=======
+SOUNDS
+=======
+
+(almost a semi-tone sharp, whoops)
+
+sfx0 99707306 (C)
+sfx1 78874306 (D) 
+sfx2 6726506  (E)
+sfx3 39428706 (F)
+sfx4 30775506 (G)
+sfx5 88136106 (A)
+sfx6 37283506 (B)
+sfx7 26175106 (C1)
+
+
+================
+COLLISIONLAYERS
+================
+Background
+Note
+Player
+
+======
+RULES
+======
+
+(insert bars every four beats)
+right [BarLine|Blank|Blank|Blank|Blank] -> [BarLine|Blank|Blank|Blank|Barline]
+
+right [Player] -> [> Player] again
+
+(play notes)
+late [PlayerC Note] -> sfx0
+late [PlayerD Note] -> sfx1
+late [PlayerE Note] -> sfx2
+late [PlayerF Note] -> sfx3
+late [PlayerG Note] -> sfx4
+late [PlayerA Note] -> sfx5
+late [PlayerB Note] -> sfx6
+late [PlayerC1 Note] -> sfx7
+
+==============
+WINCONDITIONS
+==============
+All Player on End
+
+
+=======
+LEVELS
+=======
+Message Initialising...
+ho.........o..........|
+bo........o.o.........|
+ao.......o...o........|
+go......o.....o.......|
+fo.....o.......o......|
+eo....o.........o.....|
+do...o...........o....|
+co..o.............o...|
+
+Message Excerpt from "The Sound of Music"
+h..............................................................|
+b..............................................................|
+a.......................................................oo..o..|
+g.......................................o...o...o......o..o....|
+f.......................oo..o..........o............o......o...|
+e.......o...o...o......o..o.........o......o..o................|
+d......o............o......o...................................|
+c...o......o..o................................................|
+
+h..............|
+b..............|
+a...........o..|
+g...o......o...|
+f.........o....|
+e........o.....|
+d.......o......|
+c......o.......|
+
+Message And now for a bit of a lark...
+
+h..................................|
+b..................................|
+a.......o.oo.......................|
+g...oooo....o...o..................|
+f.......................o.oo.......|
+e.............o...o.oooo....o...o..|
+d..................................|
+c.............................o...o|
+
+Message Sorry, I do apologise for that.
+Message fin.

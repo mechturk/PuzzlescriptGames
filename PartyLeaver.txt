@@ -1,0 +1,470 @@
+title Party Leaver 0.03
+background_color Black
+debug
+run_rules_on_level_start
+
+========
+OBJECTS
+========
+
+Exit
+Yellow
+00000
+0...0
+0...0
+0...0
+00000
+
+Floor
+DarkBlue DarkGreen
+11111
+00001
+00001
+00001
+00001
+
+DanceFloor
+DarkBrown Brown
+11111
+00001
+00001
+00001
+00001
+
+Wall
+DarkGrey Grey
+00010
+11111
+01000
+11111
+00010
+
+FurnitureUL
+DarkBrown
+00...
+00...
+.....
+.....
+.....
+
+FurnitureUR
+DarkBrown
+...00
+...00
+.....
+.....
+.....
+
+FurnitureDL
+DarkBrown
+.....
+.....
+.....
+00...
+00...
+
+FurnitureDR
+DarkBrown
+.....
+.....
+.....
+...00
+...00
+
+HostU
+Green Black
+.11..
+0110.
+.....
+.....
+.....
+
+
+HostR
+Green Black
+...0.
+...11
+...11
+...0.
+.....
+
+
+HostD
+Green Black
+.....
+.....
+.....
+.0110
+..11.
+
+HostL
+Green Black
+.....
+.0...
+11...
+11...
+.0...
+
+PlayerU
+Orange Blue Black
+.....
+.....
+0...0
+.1221
+..22.
+
+PlayerR
+Orange Blue Black
+..0..
+.1...
+22...
+22...
+.10..
+
+PlayerD
+Orange Blue Black
+.22..
+1221.
+0...0
+.....
+.....
+
+PlayerL
+Orange Blue Black
+..01.
+...22
+...22
+...1.
+..0..
+
+PartierD
+Red Black
+.....
+.....
+.....
+.0110
+..11.
+
+PartierR
+Red Black
+...0.
+...11
+...11
+...0.
+.....
+
+PartierU
+Red Black 
+.11..
+0110.
+.....
+.....
+.....
+
+PartierL
+Red Black
+.....
+.0...
+11...
+11...
+.0...
+
+Dance
+Black
+.....
+.....
+.....
+.....
+.....
+
+RPartier
+Black
+.....
+..00.
+..0..
+..0..
+.....
+
+=======
+LEGEND
+=======
+Background = Floor or DanceFloor
+
+PersonU = PartierU or HostU
+PersonR = PartierR or HostR
+PersonD = PartierD or HostD
+PersonL = PartierL or HostL
+
+PlayerUR = PlayerU or PlayerR
+PlayerUL = PlayerU or PlayerL
+PlayerDR = PlayerD or PlayerR
+PlayerDL = PlayerD or PlayerL
+
+Player = PlayerU or PlayerR or PlayerD or PlayerL
+Partier = PartierU or PartierR or PartierD or PartierL
+Host = HostU or HostR or HostD or HostL
+Person = PersonU or PersonR or PersonD or PersonL
+
+FurnitureU = FurnitureUR or FurnitureUL
+FurnitureR = FurnitureUR or FurnitureDR
+FurnitureD = FurnitureDR or FurnitureDL
+FurnitureL = FurnitureUL or FurnitureDL
+
+Furniture = FurnitureUL or FurnitureUR or FurnitureDL or FurnitureDR
+
+Obstacle = Wall or Person or Furniture
+
+ObstacleU = FurnitureU or PersonU
+ObstacleR = FurnitureR or PersonR
+ObstacleL = FurnitureL or PersonL
+ObstacleD = FurnitureD or PersonD
+
+# = Wall
+P = PlayerR
+Q = PlayerL
+
+U = PartierU and Floor
+R = PartierR and Floor
+D = PartierD and Floor
+L = PartierL and Floor
+E = Exit
+
+. = Floor
+, = DanceFloor
+N = RPartier and DanceFloor
+1 = PartierU and DanceFloor
+2 = PartierR and DanceFloor
+3 = PartierD and DanceFloor
+4 = PartierL and DanceFloor
+5 = HostU and Floor
+6 = HostR and Floor
+7 = HostD and Floor
+8 = HostL and Floor
+
+9 = FurnitureUL
+0 = FurnitureUR
+- = FurnitureDL
++ = FurnitureDR
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+Background
+Exit
+Player, Wall
+RPartier, Partier, Host, Furniture
+Dance
+
+======
+RULES
+======
+(people are pretty random on the dance floor)
+[RPartier] -> [Random Partier]
+
+(spin 'round and 'round)
+[Action PlayerU FurnitureUR] -> [PlayerR FurnitureUR]
+[Action PlayerR FurnitureDR] -> [PlayerD FurnitureDR]
+[Action PlayerD FurnitureDL] -> [PlayerL FurnitureDL]
+[Action PlayerL FurnitureUL] -> [PlayerU FurnitureUL]
+
+[Action PlayerU No Partier No Furniture] -> [PlayerR]
+[Action PlayerR No Partier No Furniture] -> [PlayerD]
+[Action PlayerD No Partier No Furniture] -> [PlayerL]
+[Action PlayerL No Partier No Furniture] -> [PlayerU]
+
+(politely ask for room to move past)
+Up [> PlayerU PartierU| No Obstacle] -> [> PlayerU > PartierU|]
+Right [> PlayerR PartierR| No Obstacle] -> [> PlayerR > PartierR|]
+Down [> PlayerD PartierD| No Obstacle] -> [> PlayerD > PartierD|]
+Left [> PlayerL PartierL| No Obstacle] -> [> PlayerL > PartierL|]
+
+[> Player|Wall] -> [Player |Wall]
+
+(can't push a Partier into another Person)
+Up [> PlayerU PartierU| ObstacleU] -> [PlayerU PartierU| ObstacleU]
+Right [> PlayerR PartierR| ObstacleR] -> [PlayerR PartierR|ObstacleR]
+Down [> PlayerD PartierD| ObstacleD] -> [PlayerD PartierD|ObstacleD]
+Left [> PlayerL PartierL| ObstacleL] -> [PlayerL PartierL|ObstacleL]
+
+(can't move backward into another Person)
+Down [> PlayerU | PersonU] -> [PlayerU| PersonU]
+Left [> PlayerR | PersonR] -> [PlayerR| PersonR]
+Up [> PlayerD | PersonD] -> [PlayerD| PersonD]
+Right [> PlayerL | PersonL] -> [PlayerL| PersonL]
+
+(can slide past a Person or go up to them)
+[> PlayerU| PersonU] -> [|PlayerU PersonU]
+[> PlayerR| PersonR] -> [|PlayerR PersonR]
+[> PlayerD| PersonD] -> [|PlayerD PersonD]
+[> PlayerL| PersonL] -> [|PlayerL PersonL]
+
+[> Player| Person] -> [Player| Person]
+
+(moving into furniture)
+Up [FurnitureU| < PlayerU] -> [FurnitureU| PlayerU]
+Down [FurnitureD| < PlayerD] -> [FurnitureD| PlayerD]
+Left [FurnitureL| < PlayerL] -> [FurnitureL| PlayerL]
+Right [FurnitureR| < PlayerR] -> [FurnitureR| PlayerR]
+
+[> PlayerUR| FurnitureUR] -> [|PlayerUR FurnitureUR]
+[> PlayerUL| FurnitureUL] -> [|PlayerUL FurnitureUL]
+[> PlayerDR| FurnitureDR] -> [|PlayerDR FurnitureDR]
+[> PlayerDL| FurnitureDL] -> [|PlayerDL FurnitureDL]
+
+[Up PlayerU FurnitureU] -> [PlayerU FurnitureU]
+[Right PlayerR FurnitureR] -> [PlayerR FurnitureR]
+[Down PlayerD FurnitureD] -> [PlayerD FurnitureD]
+[Left PlayerL FurnitureL] -> [PlayerL FurnitureL]
+
+[> Player| Furniture] -> [Player | Furniture]
+
+(a bit caustic, but once we've said goodbye to the hosts, they're just as in the way as everyone else)
+late [PlayerU HostU] -> [PlayerU PartierU]
+late [PlayerR HostR] -> [PlayerR PartierR]
+late [PlayerD HostD] -> [PlayerD PartierD]
+late [PlayerL HostL] -> [PlayerL PartierL]
+
+(dancers, dance!)
+late [Partier No Player DanceFloor] -> [Partier Dance DanceFloor]
+late [Dance PartierU DanceFloor] -> [random PartierR random PartierL DanceFloor]
+late [Dance PartierR DanceFloor] -> [random PartierD random PartierU DanceFloor]
+late [Dance PartierD DanceFloor] -> [random PartierL random PartierR DanceFloor]
+late [Dance PartierL DanceFloor] -> [random PartierU random PartierD DanceFloor]
+
+
+==============
+WINCONDITIONS
+==============
+Some Player on Exit
+No Host
+
+=======
+LEVELS
+=======
+
+(
+(===========
+ Test Levels
+ ===========)
+(Furni Test1)
+#######
+#.....#
+#.-.9.#
+#.....#
+#.+.0.#
+#p....e
+#######
+
+(Furni Test2)
+###################
+#l.....d.........u#
+#..d..r+l..l...r..#
+#.r-l..u..u9u.u0u.#
+#..u.......l...r..#
+#..d...d...r...l..#
+#pr0l.r9l.d+d.d-d.e
+#..u...u...r...l..#
+#d...............r#
+###################
+)
+
+
+message Everyone's gone to the party. I better go too.
+(Intro 1)
+##########
+#........#
+#p.......#
+#........e
+##########
+
+message That's right, I forgot. I hate parties. Get me outta here.
+message [Note: Press x to turn]
+(Intro 2)
+########e#
+#...##.rl#
+#...##...#
+#...d#...#
+#..r.l.d.#
+#.p.u..u.#
+#...#....#
+##########
+
+message Excuse me, coming through.
+(Intro 3)
+########
+#..r...#
+#..d##.#
+#pr.l#.#
+#..u.#le
+########
+
+message What is this, some weird conga line?
+(Line 1)
+######e##
+######r##
+#.dllll##
+#pr.....#
+#########
+
+message I don't even...
+(Line 2)
+########
+#.ldue##
+#.dd####
+#.drdr.#
+#p.r..##
+########
+
+message Oh great. Now I have to get past the dance floor.
+(Dance 1)
+#########
+#p.nnnn.#
+#..nnnn.#
+#..nnnn.#
+#..nnnn.#
+#..nnnn.e
+#########
+
+message How awkward.
+(Dance 2)
+#######e#
+#r.r,nrl#
+#pdr,nd.#
+#########
+
+message I'd better say goodbye to the host before I leave.
+(Host 1)
+#e#####
+#.l.uq#
+#r.url#
+#.l..u#
+#d7d###
+#####..
+
+(Host2)
+#######e#
+#7.r.l..#
+#.d....d#
+#uuddrlu#
+#lr...l.#
+#.r...l.#
+#p.uuur8#
+#########
+
+message Congratulations! You're one heck of a party leaver.
+message That's it for now. :)
+
+####################e#
+#......09............#
+#.r..................#
+#.+-......+..........#
+#.09......0..........#
+#....................#
+#.....p..............#
+#....................#
+#....................#
+######################

@@ -1,0 +1,177 @@
+title NAND Circuit Simulator
+author Dennis Au
+run_rules_on_level_start
+again_interval 0
+
+========
+OBJECTS
+========
+
+Background
+DarkGrey
+
+NAND
+white black
+000..
+0..0.
+0..1.
+0..0.
+000..
+
+Input
+White
+.....
+..0..
+.0.0.
+..0..
+.....
+
+
+Output
+White
+.....
+.0...
+..0..
+.0...
+.....
+
+Wire
+Grey
+
+Player
+Green
+
+Source
+Blue Grey
+00000
+00100
+01110
+00100
+00000
+
+High
+Blue
+
+Low
+Red
+
+Ground
+Red Grey
+00000
+00000
+01110
+00000
+00000
+
+Cross
+white
+..0..
+..0..
+00000
+..0..
+..0..
+
+=======
+LEGEND
+=======
+
+Gate = NAND
+
+n = NAND
+i = Input and Wire
+o = Output and Wire
+p = player
++ = wire
+s = source
+x = cross
+. = background
+g = ground
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+Background
+Player
+Wire
+High, Low
+Source, Gate, Input, Output, Cross, Ground
+
+======
+RULES
+======
+
+(propogate low)
+[Ground|Wire] -> [Ground|Low Wire]
+[Low Wire|Wire No Output] -> [Low Wire|Low Wire]
+[Low|Cross|] -> [Low|Cross|Low]
+
+(propogate high)
+[Source|Wire] -> [Source|High Wire]
+[High Wire|Wire No Output] -> [High Wire|High Wire]
+[High|Cross|] -> [High|Cross|High]
+
+(process NAND logic)
+[NAND] -> [Action NAND]
+Vertical [High Input|action NAND|High Input] -> [High Input|stationary NAND|High Input]
+Right [Stationary Nand|Output] -> [Stationary Nand|Low Output] again
+Right [Action Nand|Output] -> [Action Nand|High Output] again
+
+==============
+WINCONDITIONS
+==============
+
+=======
+LEVELS
+=======
+
+(The following chips are built to the specifications outlined in "The Elements of Computing Systems" by Nisan & Schocken. Go to www.nand2tetris.org to find out more)
+
+(not)
+g+i.
+.+no
+.+i.
+
+(and)
+g+i.+i.
+..no+no
+s+i.+i.
+
+(or)
+..+i...
+..+no+.
+s++i.i.
+.....no
+s++i.i.
+..+no+.
+..+i...
+
+(xor)
+..++i...
+g+i.noi.
+..noi.no
+s+i.noi.
+..++i...
+
+(2:1 mux)
+(either there should actually be an or gate at the end of this one or I should implement a tristate buffer, but in the meantime, high + low = high)
+..+++++......
+g++...i.+i... (> a)
+...+i.no+no+.
+g+++noi.+i.+. (> sel)
+...+i......++
+s++.++i.+i.+. (> b)
+..+...no+no+. 
+..++++i.+i...
+
+(1:2 dmux)
+...+i.+i.+i....
+g+++no+no+no++. (> sel)
+...+i..i.+i..++ (a >)
+s++.+++xi..+i.. (> input, b >)
+..+....+no++no+ 
+..++++++i..+i..
+

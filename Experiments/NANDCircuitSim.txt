@@ -40,6 +40,11 @@ Grey
 
 Player
 Green
+0...0
+.....
+.....
+.....
+0...0
 
 Source
 Blue Grey
@@ -71,6 +76,14 @@ white
 ..0..
 ..0..
 
+Next
+Green White
+11111
+11011
+11101
+11011
+11111
+
 =======
 LEGEND
 =======
@@ -80,13 +93,12 @@ Gate = NAND
 n = NAND
 i = Input and Wire
 o = Output and Wire
-p = player
+p = player and next
 + = wire
 s = source
 x = cross
 . = background
 g = ground
-
 =======
 SOUNDS
 =======
@@ -95,14 +107,20 @@ SOUNDS
 COLLISIONLAYERS
 ================
 Background
-Player
 Wire
 High, Low
 Source, Gate, Input, Output, Cross, Ground
+Next
+Player
+
 
 ======
 RULES
 ======
+
+[Action Player Source] -> [Player Ground]
+[Action Player Ground] -> [Player Source]
+[Action Player Next] -> win
 
 (propogate low)
 [Ground|Wire] -> [Ground|Low Wire]
@@ -130,18 +148,32 @@ LEVELS
 
 (The following chips are built to the specifications outlined in "The Elements of Computing Systems" by Nisan & Schocken. Go to www.nand2tetris.org to find out more)
 
-(not)
+message Press x when over +/- to toggle input states
+message Press x when over the green > to go the next circuit
+
+(nand)
+message Circuit 01: NAND Gate
+s+i.
+p.no
 g+i.
-.+no
+
+
+(not)
+message Circuit 02: NOT Gate
+g+i.
+p+no
 .+i.
 
 (and)
-g+i.+i.
-..no+no
+message Circuit 03: AND Gate
 s+i.+i.
+p.no+no
+g+i.+i.
+
 
 (or)
-..+i...
+message Circuit 04: OR Gate
+p.+i...
 ..+no+.
 s++i.i.
 .....no
@@ -150,7 +182,8 @@ s++i.i.
 ..+i...
 
 (xor)
-..++i...
+message Circuit 05: XOR Gate
+p.++i...
 g+i.noi.
 ..noi.no
 s+i.noi.
@@ -158,7 +191,8 @@ s+i.noi.
 
 (2:1 mux)
 (either there should actually be an or gate at the end of this one or I should implement a tristate buffer, but in the meantime, high + low = high)
-..+++++......
+message Circuit 06: 2-1 Multiplexer
+p.+++++......
 g++...i.+i... (> a)
 ...+i.no+no+.
 g+++noi.+i.+. (> sel)
@@ -168,10 +202,16 @@ s++.++i.+i.+. (> b)
 ..++++i.+i...
 
 (1:2 dmux)
-...+i.+i.+i....
+message Circuit 07: 1-2 Demultiplexer
+p..+i.+i.+i....
 g+++no+no+no++. (> sel)
 ...+i..i.+i..++ (a >)
 s++.+++xi..+i.. (> input, b >)
 ..+....+no++no+ 
 ..++++++i..+i..
+
+
+
+
+
 

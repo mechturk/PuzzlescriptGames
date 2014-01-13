@@ -95,8 +95,8 @@ BG = BGTop or BGGround
 . = Tick
 Background = Tick or Tock
 Player = Player1 or Player2
-P = Player1 and Seeding and Tick
-M = Moon and Tick
+P = Player1 and Tick
+M = Moon and Tick and Seeding
 O = Out and Tick
 I = In and Tick
 
@@ -115,8 +115,7 @@ Background
 In, Out, Inseed, Moon
 BG
 ForeGround
-Player
-Seeding
+Player, Seeding
 
 
 

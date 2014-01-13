@@ -45,13 +45,31 @@ DarkRed Blue Grey DarkGrey
 .300.
 ..02.
 
-Blink
-Grey
+Blink3
+Grey Blue DarkGrey
+22222
+21012
+20002
+2...2
+.....
+
+Blink1
+Grey Blue DarkGrey
+22222
+22222
+22222
+22222
+.....
+
+
+Blink2
+Grey Blue DarkGrey
 .....
 ...0.
 .....
 .....
 .....
+
 
 Ground
 Brown
@@ -100,6 +118,7 @@ LEGEND
 =======
 ForeGround = TopGround or Ground
 BG = BGTop or BGGround
+Blink = Blink1 or Blink2 or Blink3
 . = Tick
 Background = Tick or Tock
 Player = Player1 or Player2
@@ -158,9 +177,9 @@ endloop
 (player movement)
 [stationary player] -> [randomdir player] again
 
-[up player] -> [right player blink]
-[left player] -> [right player]
-[down player] -> [right player]
+[up player] -> [player random blink]
+([left player] -> [right player]
+[down player] -> [right player])
 
 
 [player] -> [stationary player]

@@ -46,20 +46,20 @@ DarkRed Blue Grey DarkGrey
 ..02.
 
 Blink3
-Grey Blue DarkGrey
+Grey Blue DarkGrey DarkRed
 22222
 21012
 20002
-2...2
-.....
+23..2
+.3...
 
 Blink1
-Grey Blue DarkGrey
+Grey Blue DarkGrey DarkRed
 22222
 22222
 22222
 22222
-.....
+.3...
 
 
 Blink2
@@ -152,7 +152,7 @@ RULES
 ======
 [foreground out] -> [out]
 [bg out tock] -> [out tock]
-[blink] -> []
+[blink2] -> []
 
 (tick/tock)
 [Tick] -> [Action Tick]

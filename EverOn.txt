@@ -45,6 +45,14 @@ DarkRed Blue Grey DarkGrey
 .300.
 ..02.
 
+Blink
+Grey
+.....
+...0.
+.....
+.....
+.....
+
 Ground
 Brown
 
@@ -114,8 +122,9 @@ COLLISIONLAYERS
 Background
 In, Out, Inseed, Moon
 BG
-ForeGround
 Player, Seeding
+ForeGround, Blink
+
 
 
 
@@ -124,6 +133,7 @@ RULES
 ======
 [foreground out] -> [out]
 [bg out tock] -> [out tock]
+[blink] -> []
 
 (tick/tock)
 [Tick] -> [Action Tick]
@@ -146,17 +156,19 @@ down [down Top|] -> [|action Top]
 endloop
 
 (player movement)
-[stationary player] -> [right player] again
+[stationary player] -> [randomdir player] again
 
-[up player] -> cancel
-[left player] -> cancel
-[down player] -> cancel
+[up player] -> [right player blink]
+[left player] -> [right player]
+[down player] -> [right player]
+
 
 [player] -> [stationary player]
 
 (scrolling and ground generation/destruction)
 [foreground] -> [left foreground]
 [BG][Tick] -> [left BG][Tick]
+right [blink| < foreground] -> [< blink| < foreground]
 
 right [< topground stationary in] -> [< topground randomdir in]
 
@@ -196,6 +208,7 @@ late down [BG|No BG] -> [BG|BGGround]
 late up [player TopGround|] -> [TopGround|player]
 (move player down)
 late down [player|no ForeGround] -> [|player]
+late [blink no player] -> []
 
 ==============
 WINCONDITIONS

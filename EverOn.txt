@@ -30,7 +30,7 @@ Black
 
 
 Player1
-DarkRed Blue Grey DarkBrown 
+DarkRed Blue Grey DarkGrey
 .333.
 .321.
 .322.
@@ -38,7 +38,7 @@ DarkRed Blue Grey DarkBrown
 ..20.
 
 Player2
-DarkRed Blue Grey DarkBrown 
+DarkRed Blue Grey DarkGrey
 .333.
 .321.
 .322.
@@ -76,10 +76,22 @@ Yellow
 00..0
 .000.
 
+BGTop
+DarkGreen DarkBrown
+.....
+00000
+10111
+11111
+11111
+
+BGGround
+DarkBrown
+
 =======
 LEGEND
 =======
 ForeGround = TopGround or Ground
+BG = BGTop or BGGround
 . = Tick
 Background = Tick or Tock
 Player = Player1 or Player2
@@ -87,6 +99,10 @@ P = Player1 and Seeding and Tick
 M = Moon and Tick
 O = Out and Tick
 I = In and Tick
+
+
+Top = TopGround or BGTop
+mn = in or inseed
 
 =======
 SOUNDS
@@ -97,15 +113,18 @@ COLLISIONLAYERS
 ================
 Background
 In, Out, Inseed, Moon
+BG
 ForeGround
-seeding
 Player
+Seeding
+
 
 
 ======
 RULES
 ======
 [foreground out] -> [out]
+[bg out tock] -> [out tock]
 
 (tick/tock)
 [Tick] -> [Action Tick]
@@ -118,13 +137,13 @@ RULES
 [Player2 Tock] -> [Player1 Tock]
 
 (seeding)
-down [Player|No TopGround][seeding] -> [Player|action TopGround][]
+down [Player|][seeding] -> [Player|action TopGround action BGTop][]
 
 startloop
-right [action TopGround|] -> [TopGround|randomdir TopGround]
-up [up TopGround|||||] -> [|action TopGround||||]
-down [down TopGround|] -> [|action TopGround]
-[> TopGround] -> [action TopGround]
+right [action Top|] -> [Top|randomdir Top]
+up [up Top|||||] -> [|action Top||||]
+down [down Top|] -> [|action Top]
+[> Top] -> [action Top]
 endloop
 
 (player movement)
@@ -138,6 +157,7 @@ endloop
 
 (scrolling and ground generation/destruction)
 [foreground] -> [left foreground]
+[BG][Tick] -> [left BG][Tick]
 
 right [< topground stationary in] -> [< topground randomdir in]
 
@@ -152,11 +172,26 @@ down [down in] -> [stationary Inseed]
 
 [in] -> [stationary in]
 
+right [< BGTop stationary mn] -> [< BGTop randomdir mn]
+
+up [up mn|||||] -> [stationary mn|seeding||||]
+up [up mn] -> [stationary mn seeding]
+
+[right mn] -> [stationary mn seeding]
+[left mn] -> [stationary mn seeding]
+
+down [down mn|] -> [stationary mn|seeding]
+down [down mn] -> [stationary mn seeding]
+
+[mn] -> [stationary mn]
+
 (destruction/generation)
 late [InSeed] -> [In TopGround]
+late [seeding] -> [BGTop]
 
 (extend ground down)
 late down [ForeGround|No Ground] -> [ForeGround|Ground]
+late down [BG|No BG] -> [BG|BGGround]
 
 (move player up)
 late up [player TopGround|] -> [TopGround|player]

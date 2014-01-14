@@ -1,6 +1,7 @@
 title Ever On
 run_rules_on_level_start
 youtube Tbz9EYtzDEo
+again_interval 0.25
 
 ========
 OBJECTS
@@ -52,6 +53,15 @@ Grey Blue DarkGrey DarkRed
 20002
 23..2
 .3...
+
+Blink4
+Grey Blue DarkGrey DarkRed
+22222
+20002
+20002
+23..2
+.3...
+
 
 Blink1
 Grey Blue DarkGrey DarkRed
@@ -142,7 +152,7 @@ Background
 In, Out, Inseed, Moon
 BG
 Player, Seeding
-ForeGround, Blink
+ForeGround, Blink, Blink4
 
 
 
@@ -153,6 +163,7 @@ RULES
 [foreground out] -> [out]
 [bg out tock] -> [out tock]
 [blink2] -> []
+[blink4] -> [blink3]
 
 (tick/tock)
 [Tick] -> [Action Tick]
@@ -177,9 +188,10 @@ endloop
 (player movement)
 [stationary player] -> [randomdir player] again
 
-[up player] -> [player random blink]
-([left player] -> [right player]
-[down player] -> [right player])
+[up player no blink] -> [player random blink]
+[up player blink3] -> [up player blink4]
+[down player blink] -> [player]
+([down player] -> [right player])
 
 
 [player] -> [stationary player]
@@ -188,6 +200,7 @@ endloop
 [foreground] -> [left foreground]
 [BG][Tick] -> [left BG][Tick]
 right [blink| < foreground] -> [< blink| < foreground]
+right [blink4| < foreground] -> [< blink4| < foreground]
 
 right [< topground stationary in] -> [< topground randomdir in]
 
@@ -228,6 +241,7 @@ late up [player TopGround|] -> [TopGround|player]
 (move player down)
 late down [player|no ForeGround] -> [|player]
 late [blink no player] -> []
+late [blink4 no player] -> []
 
 ==============
 WINCONDITIONS

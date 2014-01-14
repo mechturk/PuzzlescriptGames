@@ -123,6 +123,30 @@ DarkGreen DarkBrown
 BGGround
 DarkBrown
 
+Bulb
+DarkBlue
+.....
+.....
+.....
+.....
+...0.
+
+Grass
+Green
+.....
+.....
+.....
+..0..
+0.0..
+
+Flower
+Green Yellow
+.....
+.....
+..1..
+.0...
+.0.0.
+
 =======
 LEGEND
 =======
@@ -136,8 +160,7 @@ P = Player1 and Tick
 M = Moon and Tick and Seeding
 O = Out and Tick
 I = In and Tick
-
-
+Decoration = Flower or Grass or Bulb
 Top = TopGround or BGTop
 mn = in or inseed
 
@@ -153,6 +176,7 @@ In, Out, Inseed, Moon
 BG
 Player, Seeding
 ForeGround, Blink, Blink4
+Decoration
 
 
 
@@ -162,6 +186,7 @@ RULES
 ======
 [foreground out] -> [out]
 [bg out tock] -> [out tock]
+[out decoration] -> [out]
 [blink2] -> []
 [blink4] -> [blink3]
 
@@ -198,6 +223,7 @@ endloop
 
 (scrolling and ground generation/destruction)
 [foreground] -> [left foreground]
+[decoration] -> [left decoration]
 [BG][Tick] -> [left BG][Tick]
 right [blink| < foreground] -> [< blink| < foreground]
 right [blink4| < foreground] -> [< blink4| < foreground]
@@ -207,13 +233,16 @@ right [< topground stationary in] -> [< topground randomdir in]
 up [up in|||||] -> [stationary in|InSeed||||]
 up [up in] -> [stationary Inseed]
 
-[right in] -> [stationary Inseed]
+[right in] -> [randomdir Inseed]
 [left in] -> [stationary Inseed]
 
 down [down in|] -> [stationary in|Inseed]
 down [down in] -> [stationary Inseed]
 
 [in] -> [stationary in]
+
+up [> inseed|] -> [inseed|random decoration]
+[inseed] -> [stationary inseed]
 
 right [< BGTop stationary mn] -> [< BGTop randomdir mn]
 

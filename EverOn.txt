@@ -80,6 +80,22 @@ Grey Blue DarkGrey
 .....
 .....
 
+Blink5
+Grey Blue DarkGrey DarkRed
+.221.
+.200.
+.2...
+.2...
+.....
+
+Blink6
+Grey Blue DarkGrey DarkRed
+.220.
+.200.
+.2...
+.2...
+.....
+
 
 Ground
 Brown
@@ -152,7 +168,7 @@ LEGEND
 =======
 ForeGround = TopGround or Ground
 BG = BGTop or BGGround
-Blink = Blink1 or Blink2 or Blink3
+Blink = Blink1 or Blink2 or Blink3 or Blink5
 . = Tick
 Background = Tick or Tock
 Player = Player1 or Player2
@@ -175,7 +191,7 @@ Background
 In, Out, Inseed, Moon
 BG
 Player, Seeding
-ForeGround, Blink, Blink4
+ForeGround, Blink, Blink4, Blink6
 Decoration
 
 
@@ -189,6 +205,7 @@ RULES
 [out decoration] -> [out]
 [blink2] -> []
 [blink4] -> [blink3]
+[blink6] -> [blink5]
 
 (tick/tock)
 [Tick] -> [Action Tick]
@@ -215,6 +232,7 @@ endloop
 
 [up player no blink] -> [player random blink]
 [up player blink3] -> [up player blink4]
+[up player blink5] -> [up player blink6]
 [down player blink] -> [player]
 ([down player] -> [right player])
 
@@ -271,6 +289,7 @@ late up [player TopGround|] -> [TopGround|player]
 late down [player|no ForeGround] -> [|player]
 late [blink no player] -> []
 late [blink4 no player] -> []
+late [blink6 no player] -> []
 
 ==============
 WINCONDITIONS
@@ -280,7 +299,7 @@ WINCONDITIONS
 LEVELS
 =======
 
-O.M............I
+O........M.....I
 O..............I
 O..............I
 OP.............I

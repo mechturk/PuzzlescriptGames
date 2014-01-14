@@ -1,4 +1,4 @@
-title Ever On
+title The Road Goes Ever On
 run_rules_on_level_start
 youtube Tbz9EYtzDEo
 again_interval 0.25
@@ -245,6 +245,7 @@ endloop
 [BG][Tick] -> [left BG][Tick]
 right [blink| < foreground] -> [< blink| < foreground]
 right [blink4| < foreground] -> [< blink4| < foreground]
+right [blink6| < foreground] -> [< blink6| < foreground]
 
 right [< topground stationary in] -> [< topground randomdir in]
 
@@ -298,6 +299,9 @@ WINCONDITIONS
 =======
 LEVELS
 =======
+
+message The BGM is a cover of "The Road Goes Ever On" composed by Caspar Reiff and Peter Hall of The Tolkien Ensemble sung by YouTube user ijustwanttosing.
+message It inspired me to make this...
 
 O........M.....I
 O..............I

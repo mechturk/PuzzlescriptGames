@@ -1,0 +1,580 @@
+Title The Dialected
+run_rules_on_level_start
+
+========
+OBJECTS
+========
+
+(A
+Green
+0....
+.....
+.....
+.....
+.....
+
+B
+Green
+.0...
+.....
+.....
+.....
+.....
+
+C
+Green
+00...
+.....
+.....
+.....
+.....
+
+D
+Green
+..0..
+.....
+.....
+.....
+.....
+
+E
+Green
+0.0..
+.....
+.....
+.....
+.....
+
+F
+Green
+.00..
+.....
+.....
+.....
+.....
+
+G
+Green
+000..
+.....
+.....
+.....
+.....
+
+H
+Green
+...0.
+.....
+.....
+.....
+.....
+
+1
+Red
+.....
+.....
+.....
+.....
+0....
+
+
+2
+Red
+.....
+.....
+.....
+0....
+.....
+
+3
+Red
+.....
+.....
+.....
+0....
+0....
+
+4
+Red
+.....
+.....
+0....
+.....
+.....
+
+5
+Red
+.....
+.....
+0....
+.....
+0....
+
+6
+Red
+.....
+.....
+0....
+0....
+.....
+7
+Red
+.....
+.....
+0....
+0....
+0....
+
+8
+Red
+.....
+0....
+.....
+.....
+.....)
+
+
+A
+Green
+.....
+.....
+.....
+.....
+.....
+
+B
+Green
+.....
+.....
+.....
+.....
+.....
+
+C
+Green
+.....
+.....
+.....
+.....
+.....
+
+D
+Green
+.....
+.....
+.....
+.....
+.....
+
+E
+Green
+.....
+.....
+.....
+.....
+.....
+
+F
+Green
+.....
+.....
+.....
+.....
+.....
+
+G
+Green
+.....
+.....
+.....
+.....
+.....
+
+H
+Green
+.....
+.....
+.....
+.....
+.....
+
+1
+Red
+.....
+.....
+.....
+.....
+.....
+
+
+2
+Red
+.....
+.....
+.....
+.....
+.....
+
+3
+Red
+.....
+.....
+.....
+.....
+.....
+
+4
+Red
+.....
+.....
+.....
+.....
+.....
+
+5
+Red
+.....
+.....
+.....
+.....
+.....
+
+6
+Red
+.....
+.....
+.....
+.....
+.....
+
+7
+Red
+.....
+.....
+.....
+.....
+.....
+
+8
+Red
+.....
+.....
+.....
+.....
+.....
+
+WorldSplit
+Black
+
+
+BlackSquare
+LightGrey
+
+WhiteSquare
+White
+
+Player
+Green
+.....
+.000.
+.000.
+.000.
+.....
+
+InactivePlayer
+Green
+.....
+.000.
+.000.
+.000.
+.....
+
+GreySquare
+Grey
+
+Cover1
+Black
+00000
+00000
+00.00
+00000
+00000
+
+Cover2
+Black
+00000
+00000
+00000
+00000
+00000
+
+=======
+LEGEND
+=======
+Background = Blacksquare or WhiteSquare or GreySquare
+File = A or B or C or D or E or F or G or H
+Row = 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8
+
+P = Player
+Cover = Cover1 or Cover2
+. = WhiteSquare
+# = WorldSplit and GreySquare
+* = GreySquare and Cover2
+w = WhiteSquare and Cover2
+
+GW = WhiteSquare or GreySquare
+AP = Player or InactivePlayer
+
+=======
+SOUNDS
+=======
+sfx0 79606708
+sfx1 32459708
+
+================
+COLLISIONLAYERS
+================
+Background
+File
+Row
+Player, InactivePlayer
+Worldsplit, Cover
+
+======
+RULES
+======
+(swap)
+[Action Player][Cover] -> [Action Player][]
+right [Action Player|...|worldsplit] -> [Action Player|...|worldsplit] sfx0
+left [Action Player|...|worldsplit] -> [Action Player|...|worldsplit] sfx1
+
+[Action Player][InactivePlayer] -> [InactivePlayer][Player] 
+left [worldsplit|...|player][|...|worldsplit] -> [worldsplit|...|player][Cover2|...|worldsplit]
+right [worldsplit|...|player][|...|worldsplit] -> [worldsplit|...|player][Cover1|...|worldsplit]
+
+(keep top left square white)
+Down [WhiteSquare|WhiteSquare] -> [WhiteSquare| action WhiteSquare]
+[action whitesquare] -> [blacksquare]
+right [WhiteSquare|WhiteSquare] -> [WhiteSquare| action WhiteSquare]
+[action whitesquare] -> [blacksquare]
+
+(label top left square as A8)
+[whitesquare] -> [whitesquare A 8]
+
+(label remaining squares)
+right [A|] -> [A|B]
+right [B|] -> [B|C]
+right [C|] -> [C|D]
+right [D|] -> [D|E]
+right [E|] -> [E|F]
+right [F|] -> [F|G]
+right [G|] -> [G|H]
+down [File|] -> [File|File]
+
+down [8|] -> [8|7]
+down [7|] -> [7|6]
+down [6|] -> [6|5]
+down [5|] -> [5|4]
+down [4|] -> [4|3]
+down [3|] -> [3|2]
+down [2|] -> [2|1]
+right [Row No Worldsplit|] -> [Row|Row]
+
+(create checkerboard)
+[blacksquare|whitesquare] -> [action blacksquare|whitesquare]
++[action blacksquare| blacksquare] -> [action blacksquare| whitesquare]
+
+[> player|worldsplit] -> cancel
+[> Player| greysquare] -> cancel
+
+(clear labels on RHS)
+[worldsplit row] -> [worldsplit]
+[worldsplit file] -> [worldsplit]
+
+right [worldsplit|...|file] -> [worldsplit|...|]
+right [worldsplit|...|row] -> [worldsplit|...|]
+
+
+[Background] -> [Stationary Background]
+
+(mark top square of RHS)
+down [Background|Background] -> [Background|Action Background]
+
+right [worldsplit|...|stationary blacksquare] -> [worldsplit|...|stationary blacksquare < H < 8]
+right [moving player|...|worldsplit][worldsplit|...|stationary blacksquare] -> [moving player|...|worldsplit][worldsplit|...|stationary blacksquare > A > 8]
+
+right [worldsplit|...|stationary whitesquare] -> [worldsplit|...|stationary whitesquare > A > 8]
+right [moving player|...|worldsplit][worldsplit|...|stationary whitesquare] -> [moving player|...|worldsplit][worldsplit|...|stationary whitesquare < H < 8]
+
+
+(label RHS)
+down [perpendicular 8|] -> [perpendicular 8|perpendicular 7]
+down [perpendicular 7|] -> [perpendicular 7|perpendicular 6]
+down [perpendicular 6|] -> [perpendicular 6|perpendicular 5]
+down [perpendicular 5|] -> [perpendicular 5|perpendicular 4]
+down [perpendicular 4|] -> [perpendicular 4|perpendicular 3]
+down [perpendicular 3|] -> [perpendicular 3|perpendicular 2]
+down [perpendicular 2|] -> [perpendicular 2|perpendicular 1]
+
+down [^ A|] -> [^ A|^ B]
+down [^ B|] -> [^ B|^ C]
+down [^ C|] -> [^ C|^ D]
+down [^ D|] -> [^ D|^ E]
+down [^ E|] -> [^ E|^ F]
+down [^ F|] -> [^ F|^ G]
+down [^ G|] -> [^ G|^ H]
+
+down [v H|] -> [v H|v G]
+down [v G|] -> [v G|v F]
+down [v F|] -> [v F|v E]
+down [v E|] -> [v E|v D]
+down [v D|] -> [v D|v C]
+down [v C|] -> [v C|v B]
+down [v B|] -> [v B|v A]
+
+right [> 1| No Greysquare] -> [> 1|> 2]
+right [> 2| No Greysquare] -> [> 2|> 3]
+right [> 3| No Greysquare] -> [> 3|> 4]
+right [> 4| No Greysquare] -> [> 4|> 5]
+right [> 5| No Greysquare] -> [> 5|> 6]
+right [> 6| No Greysquare] -> [> 6|> 7]
+right [> 7| No Greysquare] -> [> 7|> 8]
+
+left [> 1| No Greysquare] -> [> 1|> 2]
+left [> 2| No Greysquare] -> [> 2|> 3]
+left [> 3| No Greysquare] -> [> 3|> 4]
+left [> 4| No Greysquare] -> [> 4|> 5]
+left [> 5| No Greysquare] -> [> 5|> 6]
+left [> 6| No Greysquare] -> [> 6|> 7]
+left [> 7| No Greysquare] -> [> 7|> 8]
+
+right [horizontal A| No Greysquare] -> [Horizontal A|Horizontal B]
+right [horizontal B| No Greysquare] -> [Horizontal B|Horizontal C]
+right [horizontal C| No Greysquare] -> [Horizontal C|Horizontal D]
+right [horizontal D| No Greysquare] -> [Horizontal D|Horizontal E]
+right [horizontal E| No Greysquare] -> [horizontal E|Horizontal F]
+right [horizontal F| No Greysquare] -> [horizontal F|Horizontal G]
+right [horizontal G| No Greysquare] -> [horizontal G|Horizontal H]
+
+left [< 8| No Greysquare] -> [< 8|< 7]
+left [< 7| No Greysquare] -> [< 7|< 6]
+left [< 6| No Greysquare] -> [< 6|< 5]
+left [< 5| No Greysquare] -> [< 5|< 4]
+left [< 4| No Greysquare] -> [< 4|< 3]
+left [< 3| No Greysquare] -> [< 3|< 2]
+left [< 2| No Greysquare] -> [< 2|< 1]
+
+right [< 8| No Greysquare] -> [< 8|< 7]
+right [< 7| No Greysquare] -> [< 7|< 6]
+right [< 6| No Greysquare] -> [< 6|< 5]
+right [< 5| No Greysquare] -> [< 5|< 4]
+right [< 4| No Greysquare] -> [< 4|< 3]
+right [< 3| No Greysquare] -> [< 3|< 2]
+right [< 2| No Greysquare] -> [< 2|< 1]
+
+left [horizontal H| No Greysquare] -> [horizontal H|horizontal G]
+left [horizontal G| No Greysquare] -> [horizontal G|horizontal F]
+left [horizontal F| No Greysquare] -> [horizontal F|horizontal E]
+left [horizontal E| No Greysquare] -> [horizontal E|horizontal D]
+left [horizontal D| No Greysquare] -> [horizontal D|horizontal C]
+left [horizontal C| No Greysquare] -> [horizontal C|horizontal B]
+left [horizontal B| No Greysquare] -> [horizontal B|horizontal A]
+
+horizontal [> Row] -> [Row]
+horizontal [> File] -> [File]
+
+(change colour of RHS)
+late right [AP whitesquare|...|worldsplit][worldsplit|...| blacksquare] -> [AP whitesquare|...|worldsplit][worldsplit|...|whitesquare]
+late right [AP blacksquare|...|worldsplit][worldsplit|...| whitesquare] -> [AP blacksquare|...|worldsplit][worldsplit|...|blacksquare]
+
+(new InactivePlayer to Other Side)
+late [InactivePlayer] -> []
+
+late [A 1 Player][A 1 No Player] -> [A 1 Player][A 1 InactivePlayer]
+late [A 2 Player][A 2 No Player] -> [A 2 Player][A 2 InactivePlayer]
+late [A 3 Player][A 3 No Player] -> [A 3 Player][A 3 InactivePlayer]
+late [A 4 Player][A 4 No Player] -> [A 4 Player][A 4 InactivePlayer]
+late [A 5 Player][A 5 No Player] -> [A 5 Player][A 5 InactivePlayer]
+late [A 6 Player][A 6 No Player] -> [A 6 Player][A 6 InactivePlayer]
+late [A 7 Player][A 7 No Player] -> [A 7 Player][A 7 InactivePlayer]
+late [A 8 Player][A 8 No Player] -> [A 8 Player][A 8 InactivePlayer]
+
+late [B 1 Player][B 1 No Player] -> [B 1 Player][B 1 InactivePlayer]
+late [B 2 Player][B 2 No Player] -> [B 2 Player][B 2 InactivePlayer]
+late [B 3 Player][B 3 No Player] -> [B 3 Player][B 3 InactivePlayer]
+late [B 4 Player][B 4 No Player] -> [B 4 Player][B 4 InactivePlayer]
+late [B 5 Player][B 5 No Player] -> [B 5 Player][B 5 InactivePlayer]
+late [B 6 Player][B 6 No Player] -> [B 6 Player][B 6 InactivePlayer]
+late [B 7 Player][B 7 No Player] -> [B 7 Player][B 7 InactivePlayer]
+late [B 8 Player][B 8 No Player] -> [B 8 Player][B 8 InactivePlayer]
+
+late [C 1 Player][C 1 No Player] -> [C 1 Player][C 1 InactivePlayer]
+late [C 2 Player][C 2 No Player] -> [C 2 Player][C 2 InactivePlayer]
+late [C 3 Player][C 3 No Player] -> [C 3 Player][C 3 InactivePlayer]
+late [C 4 Player][C 4 No Player] -> [C 4 Player][C 4 InactivePlayer]
+late [C 5 Player][C 5 No Player] -> [C 5 Player][C 5 InactivePlayer]
+late [C 6 Player][C 6 No Player] -> [C 6 Player][C 6 InactivePlayer]
+late [C 7 Player][C 7 No Player] -> [C 7 Player][C 7 InactivePlayer]
+late [C 8 Player][C 8 No Player] -> [C 8 Player][C 8 InactivePlayer]
+
+late [D 1 Player][D 1 No Player] -> [D 1 Player][D 1 InactivePlayer]
+late [D 2 Player][D 2 No Player] -> [D 2 Player][D 2 InactivePlayer]
+late [D 3 Player][D 3 No Player] -> [D 3 Player][D 3 InactivePlayer]
+late [D 4 Player][D 4 No Player] -> [D 4 Player][D 4 InactivePlayer]
+late [D 5 Player][D 5 No Player] -> [D 5 Player][D 5 InactivePlayer]
+late [D 6 Player][D 6 No Player] -> [D 6 Player][D 6 InactivePlayer]
+late [D 7 Player][D 7 No Player] -> [D 7 Player][D 7 InactivePlayer]
+late [D 8 Player][D 8 No Player] -> [D 8 Player][D 8 InactivePlayer]
+
+late [E 1 Player][E 1 No Player] -> [E 1 Player][E 1 InactivePlayer]
+late [E 2 Player][E 2 No Player] -> [E 2 Player][E 2 InactivePlayer]
+late [E 3 Player][E 3 No Player] -> [E 3 Player][E 3 InactivePlayer]
+late [E 4 Player][E 4 No Player] -> [E 4 Player][E 4 InactivePlayer]
+late [E 5 Player][E 5 No Player] -> [E 5 Player][E 5 InactivePlayer]
+late [E 6 Player][E 6 No Player] -> [E 6 Player][E 6 InactivePlayer]
+late [E 7 Player][E 7 No Player] -> [E 7 Player][E 7 InactivePlayer]
+late [E 8 Player][E 8 No Player] -> [E 8 Player][E 8 InactivePlayer]
+
+late [F 1 Player][F 1 No Player] -> [F 1 Player][F 1 InactivePlayer]
+late [F 2 Player][F 2 No Player] -> [F 2 Player][F 2 InactivePlayer]
+late [F 3 Player][F 3 No Player] -> [F 3 Player][F 3 InactivePlayer]
+late [F 4 Player][F 4 No Player] -> [F 4 Player][F 4 InactivePlayer]
+late [F 5 Player][F 5 No Player] -> [F 5 Player][F 5 InactivePlayer]
+late [F 6 Player][F 6 No Player] -> [F 6 Player][F 6 InactivePlayer]
+late [F 7 Player][F 7 No Player] -> [F 7 Player][F 7 InactivePlayer]
+late [F 8 Player][F 8 No Player] -> [F 8 Player][F 8 InactivePlayer]
+
+late [G 1 Player][G 1 No Player] -> [G 1 Player][G 1 InactivePlayer]
+late [G 2 Player][G 2 No Player] -> [G 2 Player][G 2 InactivePlayer]
+late [G 3 Player][G 3 No Player] -> [G 3 Player][G 3 InactivePlayer]
+late [G 4 Player][G 4 No Player] -> [G 4 Player][G 4 InactivePlayer]
+late [G 5 Player][G 5 No Player] -> [G 5 Player][G 5 InactivePlayer]
+late [G 6 Player][G 6 No Player] -> [G 6 Player][G 6 InactivePlayer]
+late [G 7 Player][G 7 No Player] -> [G 7 Player][G 7 InactivePlayer]
+late [G 8 Player][G 8 No Player] -> [G 8 Player][G 8 InactivePlayer]
+
+late [H 1 Player][H 1 No Player] -> [H 1 Player][H 1 InactivePlayer]
+late [H 2 Player][H 2 No Player] -> [H 2 Player][H 2 InactivePlayer]
+late [H 3 Player][H 3 No Player] -> [H 3 Player][H 3 InactivePlayer]
+late [H 4 Player][H 4 No Player] -> [H 4 Player][H 4 InactivePlayer]
+late [H 5 Player][H 5 No Player] -> [H 5 Player][H 5 InactivePlayer]
+late [H 6 Player][H 6 No Player] -> [H 6 Player][H 6 InactivePlayer]
+late [H 7 Player][H 7 No Player] -> [H 7 Player][H 7 InactivePlayer]
+late [H 8 Player][H 8 No Player] -> [H 8 Player][H 8 InactivePlayer]
+
+==============
+WINCONDITIONS
+==============
+
+=======
+LEVELS
+=======
+
+P.......#***w***
+........#**www**
+........#*wwwww*
+........#wwwwwww
+........#wwwwwww
+........#*wwwww*
+........#**www**
+........#***w***

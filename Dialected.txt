@@ -1,5 +1,6 @@
 Title The Dialected
 run_rules_on_level_start
+require_player_movement
 
 ========
 OBJECTS
@@ -282,7 +283,7 @@ Green
 .....
 
 InactivePlayer
-Green
+DarkGreen
 .....
 .000.
 .000.
@@ -294,19 +295,18 @@ Grey
 
 Cover1
 Black
-00000
-00000
-00.00
-00000
-00000
+.....
+.....
+.....
+.....
+.....
 
 Cover2
 Black
-00000
-00000
-00000
-00000
-00000
+
+
+Crate
+Brown
 
 =======
 LEGEND
@@ -321,6 +321,7 @@ Cover = Cover1 or Cover2
 # = WorldSplit and GreySquare
 * = GreySquare and Cover2
 w = WhiteSquare and Cover2
+O = Crate
 
 GW = WhiteSquare or GreySquare
 AP = Player or InactivePlayer
@@ -337,7 +338,7 @@ COLLISIONLAYERS
 Background
 File
 Row
-Player, InactivePlayer
+Player, InactivePlayer, Crate
 Worldsplit, Cover
 
 ======
@@ -349,6 +350,8 @@ right [Action Player|...|worldsplit] -> [Action Player|...|worldsplit] sfx0
 left [Action Player|...|worldsplit] -> [Action Player|...|worldsplit] sfx1
 
 [Action Player][InactivePlayer] -> [InactivePlayer][Player] 
+
+
 left [worldsplit|...|player][|...|worldsplit] -> [worldsplit|...|player][Cover2|...|worldsplit]
 right [worldsplit|...|player][|...|worldsplit] -> [worldsplit|...|player][Cover1|...|worldsplit]
 
@@ -483,6 +486,11 @@ left [horizontal B| No Greysquare] -> [horizontal B|horizontal A]
 horizontal [> Row] -> [Row]
 horizontal [> File] -> [File]
 
+(knockback to realworld)(
+right [worldsplit|...|moving player][cover] -> [worldsplit|...|moving player][]
+right [worldsplit|...|moving player][worldsplit|...|] -> [worldsplit|...|moving player][worldsplit|...|cover2]
+)
+
 (change colour of RHS)
 late right [AP whitesquare|...|worldsplit][worldsplit|...| blacksquare] -> [AP whitesquare|...|worldsplit][worldsplit|...|whitesquare]
 late right [AP blacksquare|...|worldsplit][worldsplit|...| whitesquare] -> [AP blacksquare|...|worldsplit][worldsplit|...|blacksquare]
@@ -561,7 +569,11 @@ late [H 5 Player][H 5 No Player] -> [H 5 Player][H 5 InactivePlayer]
 late [H 6 Player][H 6 No Player] -> [H 6 Player][H 6 InactivePlayer]
 late [H 7 Player][H 7 No Player] -> [H 7 Player][H 7 InactivePlayer]
 late [H 8 Player][H 8 No Player] -> [H 8 Player][H 8 InactivePlayer]
-
+(
+(knockback to realworld)
+late [Player Cover2] -> [InactivePlayer cover2]
+late [InactivePlayer no Cover] -> [Player] sfx1
+)
 ==============
 WINCONDITIONS
 ==============
@@ -572,7 +584,7 @@ LEVELS
 
 P.......#***w***
 ........#**www**
-........#*wwwww*
+..O.....#*wwwww*
 ........#wwwwwww
 ........#wwwwwww
 ........#*wwwww*
